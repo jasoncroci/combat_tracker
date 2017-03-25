@@ -1,0 +1,17 @@
+<h1>Encounters</h1>
+
+<div class="container-fluid">
+
+<% encounters.each do |encounter| %>
+
+<div class="row">
+  <p>
+    <%= link_to encounter.name, edit_encounter_path(encounter) %>
+    Enemies
+  </p>
+
+</div>
+
+<% end %>
+
+</div>

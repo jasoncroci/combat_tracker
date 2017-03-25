@@ -1,4 +1,4 @@
-<%= bootstrap_form_for(form) do |f| %>
+<%= bootstrap_form_for([encounter, form]) do |f| %>
 
   <%= f.text_field :name %>
 
@@ -6,6 +6,6 @@
 
   <%= f.text_field :armor_class %>
 
-  <%= f.submit %>
+  <%= f.primary %>
 
 <% end %>

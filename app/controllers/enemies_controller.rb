@@ -2,12 +2,12 @@ class EnemiesController < ApplicationController
 
   def new
     run Enemy::New
-    render :new, locals: { form: @form }
+    render :new, locals: { encounter: @_result["parent_model"], form: @form }
   end
 
   def create
     run Enemy::Create do |result|
-      return redirect_to enemies_path
+      return redirect_to encounter_enemies_path
     end
 
     render :new, locals: { form: @form }
@@ -16,19 +16,20 @@ class EnemiesController < ApplicationController
   def edit
     run Enemy::Edit
 
-    render :edit, locals: { form: @form }
+    render :edit, locals: { encounter: @_result["parent_model"], form: @form }
   end
 
   def update
     run Enemy::Update do |result|
-      return redirect_to enemies_path
+      return redirect_to encounter_enemies_path
     end
 
-    render :edit, locals: { form: @form }
+    render :edit, locals: { encounter: @_result["parent_model"], form: @form }
   end
 
   def index
-    render :index, locals: { enemies: Enemy.all }
+    result = Enemy::New.(params)
+    render :index, locals: { encounter: result["parent_model"], enemies: Enemy.all }
   end
 
 end

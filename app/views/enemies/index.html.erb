@@ -1,7 +1,7 @@
-<h1>Enemies</h1>
+<h1><%= encounter.name %> Enemies</h1>
 
 <% enemies.each do |enemy| %>
 
-<p><%= link_to enemy.name, edit_enemy_path(enemy) %></p>
+<p><%= link_to enemy.name, edit_encounter_enemy_path(encounter, enemy) %></p>
 
 <% end %>

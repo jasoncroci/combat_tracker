@@ -1,15 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe Enemy::Create, type: :concept do
-
-  let!(:encounter) do
-    Encounter.create!(name:"Encounter")
-  end
+RSpec.describe Encounter::Create, type: :concept do
 
   context "invalid input" do
 
     subject(:result) do
-      Enemy::Create.("encounter_id" =>  encounter.id, "enemy" => {})
+      Encounter::Create.("encounter" => {})
     end
 
     specify do
@@ -22,7 +18,7 @@ RSpec.describe Enemy::Create, type: :concept do
   context "success" do
 
     subject(:result) do
-      Enemy::Create.("encounter_id" =>  encounter.id, "enemy" => {name: "Bob", hit_points: 100, armor_class: 20})
+      Encounter::Create.("encounter" => {name: "SomeEncounter", challenge_rating: 10, experience_points: 2000})
     end
 
     specify do
@@ -30,9 +26,8 @@ RSpec.describe Enemy::Create, type: :concept do
     end
 
     specify do
-      expect( subject["model"] ).to be_a Enemy
+      expect( subject["model"] ).to be_a Encounter
       expect( subject["model"].persisted? ).to be true
-      expect( subject["model"].encounter ).to eq encounter
     end
 
   end

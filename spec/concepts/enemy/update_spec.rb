@@ -2,8 +2,12 @@ require 'rails_helper'
 
 RSpec.describe Enemy::Update, type: :concept do
 
-  let(:enemy) do
-    Enemy.create!(name:"Test",hit_points:100,armor_class:10)
+  let!(:encounter) do
+    Encounter.create!(name:"Encounter")
+  end
+
+  let!(:enemy) do
+    Enemy.create!(name:"Test",hit_points:100,armor_class:10, encounter: encounter)
   end
 
   context "invalid input" do
@@ -21,7 +25,7 @@ RSpec.describe Enemy::Update, type: :concept do
   context "success" do
 
     subject(:result) do
-      Enemy::Update.(id: enemy.id, "enemy" => {name: "Bob", hit_points: 99, armor_class: 9})
+      Enemy::Update.(id: enemy.id, "enemy" => {name: "Bob", hit_points: 99, armor_class: 9}, "encounter_id" => encounter.id)
     end
 
     specify do

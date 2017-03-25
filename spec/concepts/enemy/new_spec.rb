@@ -2,8 +2,12 @@ require 'rails_helper'
 
 RSpec.describe Enemy::New, type: :concept do
 
+  let!(:encounter) do
+    Encounter.create!(name:"Encounter")
+  end
+
   subject(:result) do
-    Enemy::New.()
+    Enemy::New.("encounter_id" =>  encounter.id)
   end
 
   specify do
@@ -11,8 +15,12 @@ RSpec.describe Enemy::New, type: :concept do
   end
 
   specify do
-    expect( subject["model"] ).to be_a Enemy
-    expect( subject["contract.default"] ).to be_a Enemy::Contract::Create
+    expect( result["parent_model"].enemies ).to match_array [result["model"]]
+  end
+
+  specify do
+    expect( result["model"] ).to be_a Enemy
+    expect( result["contract.default"] ).to be_a Enemy::Contract::Create
   end
 
 end

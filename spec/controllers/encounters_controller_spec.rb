@@ -1,19 +1,15 @@
 require 'rails_helper'
 
-RSpec.describe EnemiesController, type: :controller do
+RSpec.describe EncountersController, type: :controller do
 
   let!(:encounter) do
-    Encounter.create(name:"Encounter1")
-  end
-
-  let!(:enemy) do
-    encounter.enemies.create!(name:"Test",hit_points:100,armor_class:10)
+    Encounter.create!(name:"Test", challenge_rating:10, experience_points:1000)
   end
 
   describe "#index" do
 
     specify do
-      get :index, params: { encounter_id: encounter }
+      get :index
       expect( response ).to render_template :index
     end
 
@@ -22,7 +18,7 @@ RSpec.describe EnemiesController, type: :controller do
   describe "#new" do
 
     specify do
-      get :new, params: { encounter_id: encounter }
+      get :new
       expect( response ).to render_template :new
     end
 
@@ -31,7 +27,7 @@ RSpec.describe EnemiesController, type: :controller do
   describe "#create" do
 
     before do
-      allow( Enemy::Create ).to receive(:call).and_return result
+      allow( Encounter::Create ).to receive(:call).and_return result
     end
 
     context "failure" do
@@ -41,7 +37,7 @@ RSpec.describe EnemiesController, type: :controller do
       end
 
       specify do
-        post :create, params: { encounter_id: encounter }
+        post :create
         expect( response ).to render_template :new
       end
 
@@ -54,8 +50,8 @@ RSpec.describe EnemiesController, type: :controller do
       end
 
       specify do
-        post :create, params: { encounter_id: encounter }
-        expect( response ).to redirect_to encounter_enemies_path
+        post :create
+        expect( response ).to redirect_to encounters_path
       end
 
     end
@@ -65,7 +61,7 @@ RSpec.describe EnemiesController, type: :controller do
   describe "#edit" do
 
     specify do
-      get :edit, params: {encounter_id: encounter.id, id: enemy.id}
+      get :edit, params: {id: encounter.id}
       expect( response ).to render_template :edit
     end
 
@@ -74,7 +70,7 @@ RSpec.describe EnemiesController, type: :controller do
   describe "#update" do
 
     before do
-      allow( Enemy::Update ).to receive(:call).and_return result
+      allow( Encounter::Update ).to receive(:call).and_return result
     end
 
     context "failure" do
@@ -84,7 +80,7 @@ RSpec.describe EnemiesController, type: :controller do
       end
 
       specify do
-        put :update, params: {encounter_id: encounter.id, id: enemy.id}
+        put :update, params: {id: encounter.id}
         expect( response ).to render_template :edit
       end
 
@@ -97,8 +93,8 @@ RSpec.describe EnemiesController, type: :controller do
       end
 
       specify do
-        put :update, params: {encounter_id: encounter.id, id: enemy.id}
-        expect( response ).to redirect_to encounter_enemies_path
+        put :update, params: {id: encounter.id}
+        expect( response ).to redirect_to encounters_path
       end
 
     end
