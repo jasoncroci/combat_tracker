@@ -1,0 +1,16 @@
+<h1>New Character</h1>
+
+<%= form_for form do |f| %>
+
+  <%= f.label :name %> <br/>
+  <%= f.text_field :name %><br/>
+
+  <%= f.label :hit_points %> <br/>
+  <%= f.text_field :hit_points %><br>
+
+  <%= f.label :armor_class %> <br/>
+  <%= f.text_field :armor_class %><br/>
+
+  <%= f.submit %>
+
+<% end %>
