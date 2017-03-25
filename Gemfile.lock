@@ -49,6 +49,7 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.0.5)
+    database_cleaner (1.5.3)
     debug_inspector (0.0.2)
     declarative (0.0.9)
     declarative-builder (0.1.0)
@@ -232,6 +233,7 @@ DEPENDENCIES
   bootstrap_form
   byebug
   coffee-rails (~> 4.2)
+  database_cleaner
   dry-validation
   jbuilder (~> 2.5)
   jquery-rails
