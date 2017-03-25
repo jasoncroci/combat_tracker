@@ -1,0 +1,7 @@
+<h1>Enemies</h1>
+
+<% enemies.each do |enemy| %>
+
+<p><%= link_to enemy.name, edit_enemy_path(enemy) %></p>
+
+<% end %>

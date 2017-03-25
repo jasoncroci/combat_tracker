@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe CharactersController, type: :controller do
+RSpec.describe EnemiesController, type: :controller do
 
-  let!(:character) do
-    Character.create!(name:"Test",hit_points:100,armor_class:10)
+  let!(:enemy) do
+    Enemy.create!(name:"Test",hit_points:100,armor_class:10)
   end
 
   describe "#index" do
@@ -27,7 +27,7 @@ RSpec.describe CharactersController, type: :controller do
   describe "#create" do
 
     before do
-      allow( Character::Create ).to receive(:call).and_return result
+      allow( Enemy::Create ).to receive(:call).and_return result
     end
 
     context "failure" do
@@ -51,7 +51,7 @@ RSpec.describe CharactersController, type: :controller do
 
       specify do
         post :create
-        expect( response ).to redirect_to characters_path
+        expect( response ).to redirect_to enemies_path
       end
 
     end
@@ -61,7 +61,7 @@ RSpec.describe CharactersController, type: :controller do
   describe "#edit" do
 
     specify do
-      get :edit, params: {id: character.id}
+      get :edit, params: {id: enemy.id}
       expect( response ).to render_template :edit
     end
 
@@ -70,7 +70,7 @@ RSpec.describe CharactersController, type: :controller do
   describe "#update" do
 
     before do
-      allow( Character::Update ).to receive(:call).and_return result
+      allow( Enemy::Update ).to receive(:call).and_return result
     end
 
     context "failure" do
@@ -80,7 +80,7 @@ RSpec.describe CharactersController, type: :controller do
       end
 
       specify do
-        put :update, params: {id: character.id}
+        put :update, params: {id: enemy.id}
         expect( response ).to render_template :edit
       end
 
@@ -93,8 +93,8 @@ RSpec.describe CharactersController, type: :controller do
       end
 
       specify do
-        put :update, params: {id: character.id}
-        expect( response ).to redirect_to characters_path
+        put :update, params: {id: enemy.id}
+        expect( response ).to redirect_to enemies_path
       end
 
     end
