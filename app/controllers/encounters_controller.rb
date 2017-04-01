@@ -32,4 +32,10 @@ class EncountersController < ApplicationController
     render :edit, locals: { form: @form }
   end
 
+  def show
+    run Encounter::Edit
+
+    render :show, locals: { form: @form }
+  end
+
 end

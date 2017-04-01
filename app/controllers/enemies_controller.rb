@@ -21,10 +21,9 @@ class EnemiesController < ApplicationController
 
   def update
     run Enemy::Update do |result|
-      return redirect_to encounter_enemies_path
+      return render json: @form, status: :accepted
     end
-
-    render :edit, locals: { encounter: @_result["parent_model"], form: @form }
+    render json: @form, status: :unprocessable_entity
   end
 
   def index

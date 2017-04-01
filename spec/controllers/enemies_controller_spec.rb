@@ -85,7 +85,7 @@ RSpec.describe EnemiesController, type: :controller do
 
       specify do
         put :update, params: {encounter_id: encounter.id, id: enemy.id}
-        expect( response ).to render_template :edit
+        expect( response.status ).to eq 422
       end
 
     end
@@ -98,7 +98,7 @@ RSpec.describe EnemiesController, type: :controller do
 
       specify do
         put :update, params: {encounter_id: encounter.id, id: enemy.id}
-        expect( response ).to redirect_to encounter_enemies_path
+        expect( response.status ).to eq 202
       end
 
     end
