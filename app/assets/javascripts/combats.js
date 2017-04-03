@@ -4,7 +4,7 @@ $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
 
 $(document).ready(function() {
 
-    $('#enemy_table a[data-type="text"]').editable({
+    $('#combatant_table a[data-type="text"]').editable({
       // success: function(response, newValue) {
       //   console.log('SUCXCCC')
       //   console.log(response);
@@ -12,10 +12,15 @@ $(document).ready(function() {
       // },
       params: function(params) {
         //originally params contain pk, name and value
-        params.enemy = {};
-        params.enemy[params["name"]] = params["value"]
+        params.combat = {};
+        params.combat[params["name"]] = params["value"]
         return params;
       }
+    });
+
+    $('#combatant_table a[data-type="text"]').on('save', function(e, params) {
+      var field_id = $(this).attr("name") + "_field";
+      $("#" + field_id).val(params.newValue)
     });
 
 

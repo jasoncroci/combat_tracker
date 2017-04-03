@@ -7,9 +7,10 @@
 <div class="row">
   <p>
     <%= link_to encounter.name, edit_encounter_path(encounter) %>
-    Enemies
+    <%= bootstrap_form_for(encounter, url: encounter_combats_path(encounter), method: :post) do |f| %>
+      <%= f.submit 'Start combat' %>
+    <% end %>
   </p>
-
 </div>
 
 <% end %>

@@ -4,6 +4,7 @@ class Combat::Create < Trailblazer::Operation
   step :characters!
   step Model( Combat, :new )
   step :contract!
+  step :start_combat!
   step :save!
 
 
@@ -26,6 +27,10 @@ class Combat::Create < Trailblazer::Operation
         characters: characters,
         enemies:enemies
       }
+  end
+
+  def start_combat!(options)
+    options["contract.default"].start_combat!
   end
 
   def save!(options,model:,**)

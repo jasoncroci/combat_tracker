@@ -22,7 +22,7 @@ RSpec.describe Enemy::Create, type: :concept do
   context "success" do
 
     subject(:result) do
-      Enemy::Create.("encounter_id" =>  encounter.id, "enemy" => {name: "Bob", hit_points: 100, armor_class: 20})
+      Enemy::Create.("encounter_id" =>  encounter.id, "enemy" => {name: "Bob", hit_points: 100, armor_class: 20, initiative_bonus: 0})
     end
 
     specify do

@@ -234,6 +234,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.2)
   database_cleaner
+  dry-types
   dry-validation
   jbuilder (~> 2.5)
   jquery-rails

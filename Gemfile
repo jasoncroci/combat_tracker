@@ -56,4 +56,5 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'trailblazer-rails'
 gem 'dry-validation'
+gem 'dry-types'
 gem 'bootstrap_form'
