@@ -16,7 +16,7 @@
       <tbody>
       <% combat.combatants.each do |combatant| %>
         <% id = "#{combatant.class.name.downcase}_#{combatant.id}" %>
-        <tr>
+        <tr id="<%= combatant.name %>">
           <th scope="row"><a href="#" name="<%= id %>_initiative" data-type="text" data-title="Enter initiative"><%= combatant.initiative %></a></th>
           <td><%= combatant.name %></td>
           <td><a href="#" name="<%= id %>_current_hit_points" data-type="text" data-title="Enter hit points"><%= combatant.current_hit_points %></a></td>
@@ -30,11 +30,12 @@
 
 <%= bootstrap_form_for combat, remote: true, html: { id: "combat_form" } do |f| %>
   <%= f.fields_for :encounter do |encounter_form| %>
-    <%= encounter_form.hidden_field :name, id: "combatant_" %>
+    <%= encounter_form.hidden_field :name %>
     <%= encounter_form.hidden_field :experience_points %>
     <%= encounter_form.hidden_field :challenge_rating %>
   <% end %>
   <%= f.fields_for :enemies do |enemy_form| %>
+    <%= enemy_form.hidden_field :id %>
     <%= enemy_form.hidden_field :name %>
     <%= enemy_form.hidden_field :hit_points %>
     <%= enemy_form.hidden_field :armor_class %>
@@ -43,6 +44,7 @@
     <%= enemy_form.hidden_field :initiative, id: "enemy_#{enemy_form.object.id}_initiative_field" %>
   <% end %>
   <%= f.fields_for :characters do |character_form| %>
+    <%= character_form.hidden_field :id %>
     <%= character_form.hidden_field :name %>
     <%= character_form.hidden_field :hit_points %>
     <%= character_form.hidden_field :armor_class %>
