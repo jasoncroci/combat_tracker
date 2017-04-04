@@ -5,6 +5,7 @@ module Combat::Contract
     feature Coercion
 
     property :current_round, default: 1, virtual: true
+    property :current_turn, virtual: true
 
     property :encounter, populate_if_empty: Encounter, virtual: true do
       property :name

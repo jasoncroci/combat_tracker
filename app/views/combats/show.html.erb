@@ -1,10 +1,10 @@
 <h1><%= combat.encounter.name %></h1>
 
-<div class="container">
+<div class="container-fluid">
 
   <div class="table-responsive bordered">
     <table id="combatant_table" class="table table-hover table-condensed">
-      <caption>Order</caption>
+      <caption>Round: <span><%= combat.current_round %></span></caption>
       <thead>
         <tr>
           <td>Initiative</td>
@@ -16,8 +16,8 @@
       <tbody>
       <% combat.combatants.each do |combatant| %>
         <% id = "#{combatant.class.name.downcase}_#{combatant.id}" %>
-        <tr id="<%= combatant.name %>">
-          <th scope="row"><a href="#" name="<%= id %>_initiative" data-type="text" data-title="Enter initiative"><%= combatant.initiative %></a></th>
+        <tr id="<%= id %>">
+          <td scope="row"><a href="#" name="<%= id %>_initiative" data-type="text" data-title="Enter initiative"><%= combatant.initiative %></a></th>
           <td><%= combatant.name %></td>
           <td><a href="#" name="<%= id %>_current_hit_points" data-type="text" data-title="Enter hit points"><%= combatant.current_hit_points %></a></td>
           <td><%= combatant.armor_class %></td>
@@ -29,6 +29,8 @@
 </div>
 
 <%= bootstrap_form_for combat, remote: true, html: { id: "combat_form" } do |f| %>
+  <%= f.hidden_field :current_round %>
+  <%= f.hidden_field :current_turn %>
   <%= f.fields_for :encounter do |encounter_form| %>
     <%= encounter_form.hidden_field :name %>
     <%= encounter_form.hidden_field :experience_points %>
@@ -37,7 +39,7 @@
   <%= f.fields_for :enemies do |enemy_form| %>
     <%= enemy_form.hidden_field :id %>
     <%= enemy_form.hidden_field :name %>
-    <%= enemy_form.hidden_field :hit_points %>
+    <%= enemy_form.hidden_field :hit_points, id: "enemy_#{enemy_form.object.id}_hit_points_field" %>
     <%= enemy_form.hidden_field :armor_class %>
     <%= enemy_form.hidden_field :initiative_bonus %>
     <%= enemy_form.hidden_field :current_hit_points, id: "enemy_#{enemy_form.object.id}_current_hit_points_field" %>
@@ -51,17 +53,20 @@
     <%= character_form.hidden_field :current_hit_points, id: "character_#{character_form.object.id}_current_hit_points_field" %>
     <%= character_form.hidden_field :initiative, id: "character_#{character_form.object.id}_initiative_field" %>
   <% end %>
+  <button class="btn btn-info" id="begin_combat_btn" type="submit">Next</button>
   <%= f.submit 'Save', id: "save_btn" %>
 <% end %>
 
 <%= javascript_tag do %>
 
 $(document).ready(function() {
-  $("#combat_form").on("ajax:success", function(e, data, status, xhr){
+
+  /*$("#combat_form").on("ajax:success", function(e, data, status, xhr){
     console.log(xhr.responseText)
   }).on("ajax:error", function(e, xhr, status, error){
     console.log(xhr.responseText)
   });
+  */
 
 });
 
