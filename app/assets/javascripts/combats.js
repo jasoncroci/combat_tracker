@@ -49,13 +49,13 @@ $(document).ready(function() {
       var field_name = item.attr("name").replace("_current","")+"_field";
       var current_hit_points = parseInt(current_hit_points);
       var total_hit_points = parseInt($("#" + field_name).val());
-      if( parseInt(current_hit_points) <= total_hit_points/2 ){
+      if( current_hit_points <= 0 ){
+        item.closest("tr").remove();
+      } else if( current_hit_points <= total_hit_points/2 ){
         item.closest("td").addClass("danger");
       } else{
         item.closest("td").removeClass("danger");
       }
-      //console.log(params);
-      //var target_field = enemy_50_current_hit_points_field
     };
 
     $('#combatant_table a[name$="_current_hit_points"]').on('save', function(e, params) {
