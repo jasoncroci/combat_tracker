@@ -6,6 +6,10 @@ RSpec.describe CombatsController, type: :controller do
     Combat.create!(data:{})
   end
 
+  before(:each) do
+    controller.stub(:authenticate_user!).and_return true
+  end
+
   describe "#create" do
 
     before do

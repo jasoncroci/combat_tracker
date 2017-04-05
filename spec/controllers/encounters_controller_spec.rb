@@ -6,6 +6,10 @@ RSpec.describe EncountersController, type: :controller do
     Encounter.create!(name:"Test", challenge_rating:10, experience_points:1000)
   end
 
+  before(:each) do
+    controller.stub(:authenticate_user!).and_return true
+  end
+
   describe "#index" do
 
     specify do

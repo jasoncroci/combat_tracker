@@ -6,6 +6,10 @@ RSpec.describe CharactersController, type: :controller do
     Character.create!(name:"Test",hit_points:100,armor_class:10)
   end
 
+  before(:each) do
+    controller.stub(:authenticate_user!).and_return true
+  end
+
   describe "#index" do
 
     specify do

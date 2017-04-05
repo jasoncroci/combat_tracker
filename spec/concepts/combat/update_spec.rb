@@ -21,7 +21,7 @@ RSpec.describe Combat::Update, type: :concept do
   context "success" do
 
     let(:data) do
-      {"current_round"=>1, "encounter"=>nil, "enemies"=>[], "characters"=>[]}
+      {"current_round"=>1, "current_turn" => nil, "encounter"=>nil, "enemies"=>[], "characters"=>[]}
     end
 
     subject(:result) do
