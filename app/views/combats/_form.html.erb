@@ -9,19 +9,19 @@
   <%= f.fields_for :enemies do |enemy_form| %>
     <%= enemy_form.hidden_field :id %>
     <%= enemy_form.hidden_field :name %>
-    <%= enemy_form.hidden_field :hit_points, id: "enemy_#{enemy_form.object.id}_hit_points_field" %>
+    <%= enemy_form.hidden_field :hit_points, id: "#{enemy_form.object.identity}_hit_points_field" %>
     <%= enemy_form.hidden_field :armor_class %>
     <%= enemy_form.hidden_field :initiative_bonus %>
-    <%= enemy_form.hidden_field :current_hit_points, id: "enemy_#{enemy_form.object.id}_current_hit_points_field" %>
-    <%= enemy_form.hidden_field :initiative, id: "enemy_#{enemy_form.object.id}_initiative_field" %>
+    <%= enemy_form.hidden_field :current_hit_points, id: "#{enemy_form.object.identity}_current_hit_points_field" %>
+    <%= enemy_form.hidden_field :initiative, id: "#{enemy_form.object.identity}_initiative_field" %>
   <% end %>
   <%= f.fields_for :characters do |character_form| %>
     <%= character_form.hidden_field :id %>
     <%= character_form.hidden_field :name %>
     <%= character_form.hidden_field :hit_points %>
     <%= character_form.hidden_field :armor_class %>
-    <%= character_form.hidden_field :current_hit_points, id: "character_#{character_form.object.id}_current_hit_points_field" %>
-    <%= character_form.hidden_field :initiative, id: "character_#{character_form.object.id}_initiative_field" %>
+    <%= character_form.hidden_field :current_hit_points, id: "#{character_form.object.identity}_current_hit_points_field" %>
+    <%= character_form.hidden_field :initiative, id: "#{character_form.object.identity}_initiative_field" %>
   <% end %>
   <button class="btn btn-info" id="begin_combat_btn" type="submit">Next</button>
   <%= f.submit 'Save', id: "save_btn" %>

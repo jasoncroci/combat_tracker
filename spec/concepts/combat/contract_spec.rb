@@ -70,6 +70,18 @@ RSpec.describe Combat::Contract::Create, type: :contract do
 
   end
 
+  describe "identity" do
+
+    specify do
+      expect( contract.characters.first.identity ).to eq "character_#{character1.id}"
+    end
+
+    specify do
+      expect( contract.enemies.first.identity ).to eq "enemy_#{enemy1.id}"
+    end
+
+  end
+
   describe "start_combat!" do
 
     let!(:enemy2) do
@@ -96,11 +108,11 @@ RSpec.describe Combat::Contract::Create, type: :contract do
   describe "combatants" do
 
     let!(:character2) do
-      Character.create!(name:"Character2")
+      Character.create!(name:"Character2", hit_points: 5)
     end
 
     let!(:enemy2) do
-      Enemy.create!(name:"Enemy2", encounter_id: encounter.id)
+      Enemy.create!(name:"Enemy2", hit_points: 50, encounter_id: encounter.id)
     end
 
     before do
@@ -112,8 +124,38 @@ RSpec.describe Combat::Contract::Create, type: :contract do
       contract.characters.last.initiative = "20"
     end
 
-    specify do
-      expect( contract.combatants ).to eq [contract.characters.last, contract.enemies.last, contract.characters.first, contract.enemies.first]
+    context "all combatants active" do
+
+      specify do
+        expect( contract.combatants ).to eq [contract.characters.last, contract.enemies.last, contract.characters.first, contract.enemies.first]
+      end
+
+    end
+
+    context "enemy combatants defeated" do
+
+      before do
+        contract.enemies.first.current_hit_points = 0
+        contract.enemies.last.current_hit_points = -10
+      end
+
+      specify do
+        expect( contract.combatants ).to eq [contract.characters.last, contract.characters.first]
+      end
+
+    end
+
+    context "characters unconscious" do
+
+      before do
+        contract.characters.first.current_hit_points = 0
+        contract.characters.last.current_hit_points = -10
+      end
+
+      specify do
+        expect( contract.combatants ).to eq [contract.characters.last, contract.enemies.last, contract.characters.first, contract.enemies.first]
+      end
+
     end
 
   end

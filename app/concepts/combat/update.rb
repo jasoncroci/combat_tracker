@@ -12,6 +12,6 @@ class Combat::Update < Trailblazer::Operation
   end
 
   def broadcast!(options,**)
-    ActionCable.server.broadcast "combat_channel", message: options["contract.default"].to_nested_hash
+    ActionCable.server.broadcast "combat_channel", options["contract.default"].to_nested_hash
   end
 end

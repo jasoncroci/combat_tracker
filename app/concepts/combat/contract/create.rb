@@ -22,6 +22,10 @@ module Combat::Contract
       # Virtual Fields
       property :current_hit_points, type: Types::Form::Int, virtual: true, default: -> { self.hit_points }
       property :initiative, type: Types::Form::Int, virtual: true, default: 0
+
+      def identity
+        "enemy_#{id}"
+      end
     end
 
     collection :characters, populate_if_empty: Character, default: [], virtual: true do
@@ -32,14 +36,22 @@ module Combat::Contract
       # Virtual Fields
       property :current_hit_points, type: Types::Form::Int, virtual: true, default: -> { self.hit_points }
       property :initiative, type: Types::Form::Int, virtual: true, default: 0
+
+      def identity
+        "character_#{id}"
+      end
     end
 
     def start_combat!
       set_enemy_initiative!
     end
 
+    def active_enemies
+      enemies.select { |enemy| enemy.current_hit_points > 0 }
+    end
+
     def combatants
-      (enemies + characters).sort!{ |a, b| b.initiative <=> a.initiative }
+      (active_enemies + characters).sort!{ |a, b| b.initiative <=> a.initiative }
     end
 
     private

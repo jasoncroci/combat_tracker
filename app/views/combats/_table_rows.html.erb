@@ -1,5 +1,5 @@
 <% combatants.each do |combatant| %>
-  <% id = "#{combatant.class.name.downcase}_#{combatant.id}" %>
+  <% id = combatant.identity %>
   <tr id="<%= id %>">
     <td scope="row"><a href="#" name="<%= id %>_initiative" data-type="text" data-title="Enter initiative"><%= combatant.initiative %></a></th>
     <td><%= combatant.name %></td>
