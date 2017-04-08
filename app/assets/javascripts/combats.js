@@ -1,3 +1,7 @@
+//= require cable.js
+//= require ./channels/combat.js
+//= require_self
+
 //turn to inline mode
 $.fn.editable.defaults.mode = 'inline';
 $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
