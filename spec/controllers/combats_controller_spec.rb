@@ -3,12 +3,11 @@ require 'rails_helper'
 RSpec.describe CombatsController, type: :controller do
 
   let!(:combat) do
-    Combat.create!(data:{})
+    Combat.create!(data:{encounter:{name:"Test"}})
   end
 
   before(:each) do
-    allow( controller ).to receive(:authenticate_user!).and_return true
-    allow( controller ).to receive(:current_user).and_return double(admin?:false)
+    sign_in user
   end
 
   describe "#create" do

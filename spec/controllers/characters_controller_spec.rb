@@ -7,7 +7,7 @@ RSpec.describe CharactersController, type: :controller do
   end
 
   before(:each) do
-    controller.stub(:authenticate_user!).and_return true
+    sign_in user
   end
 
   describe "#index" do
