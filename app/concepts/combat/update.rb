@@ -1,4 +1,5 @@
 class Combat::Update < Trailblazer::Operation
+  step Macro::AdminPolicy()
   step Model( Combat, :find_by )
   step Contract::Build( constant: Combat::Contract::Create )
   step Contract::Validate(key: "combat")

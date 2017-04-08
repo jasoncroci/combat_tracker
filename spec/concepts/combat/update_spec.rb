@@ -6,10 +6,30 @@ RSpec.describe Combat::Update, type: :concept do
     Combat.create!(data:{})
   end
 
+  let(:data) do
+    {"current_round"=>1, "current_turn" => nil, "encounter"=>nil, "enemies"=>[], "characters"=>[]}
+  end
+
+  let(:current_user){ User.new(admin:true) }
+
+  subject(:result) do
+    Combat::Update.({id: combat.id, "combat" => data}, "current_user" => current_user)
+  end
+
+  context "policy violation" do
+
+    let(:current_user){ User.new }
+
+    specify do
+      expect( result.success? ).to be false
+    end
+
+  end
+
   context "invalid input" do
 
     subject(:result) do
-      Combat::Update.()
+      Combat::Update.({}, "current_user" => current_user)
     end
 
     specify do
@@ -19,14 +39,6 @@ RSpec.describe Combat::Update, type: :concept do
   end
 
   context "success" do
-
-    let(:data) do
-      {"current_round"=>1, "current_turn" => nil, "encounter"=>nil, "enemies"=>[], "characters"=>[]}
-    end
-
-    subject(:result) do
-      Combat::Update.(id: combat.id, "combat" => data)
-    end
 
     specify do
       expect( result.success? ).to be true
