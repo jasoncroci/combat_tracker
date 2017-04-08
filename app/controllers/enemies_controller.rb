@@ -27,8 +27,9 @@ class EnemiesController < ApplicationController
   end
 
   def index
-    result = Enemy::New.(params)
-    render :index, locals: { encounter: result["parent_model"], enemies: Enemy.all }
+    run Enemy::New do |result|
+      return render :index, locals: { encounter: result["parent_model"], enemies: result["parent_model"].enemies.all }
+    end
   end
 
 end
