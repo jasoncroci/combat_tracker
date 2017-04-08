@@ -1,4 +1,6 @@
 class Combat::Create < Trailblazer::Operation
+  include Rails.application.routes.url_helpers
+
   step Macro::AdminPolicy()
   step :encounter!
   step :enemies!
@@ -7,7 +9,7 @@ class Combat::Create < Trailblazer::Operation
   step :contract!
   step :start_combat!
   step :save!
-
+  success :broadcast!
 
   def encounter!(options, params:, **)
     options["encounter"] = Encounter.find_by(id: params["encounter_id"])
@@ -39,6 +41,10 @@ class Combat::Create < Trailblazer::Operation
       model.data = hash
       model.save
     end
+  end
+
+  def broadcast!(options,model:,**)
+    ActionCable.server.broadcast "waiting_room_channel", url: combat_path(model)
   end
 
 end
