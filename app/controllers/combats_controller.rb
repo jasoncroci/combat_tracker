@@ -17,8 +17,8 @@ class CombatsController < ApplicationController
   end
 
   def show
-    run Combat::Show
-
-    render cell(Combat::Cell::Show, @form, current_user: current_user)
+    run Combat::Show do
+      return render cell(Combat::Cell::Show, @form, current_user: current_user)
+    end
   end
 end

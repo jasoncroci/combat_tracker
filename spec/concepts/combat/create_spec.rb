@@ -14,14 +14,30 @@ RSpec.describe Combat::Create, type: :concept do
     Character.create!(name:"Character")
   end
 
+  let(:current_user){ User.new(admin:true) }
+
   subject(:result) do
-    Combat::Create.("encounter_id" => encounter.id)
+    Combat::Create.({"encounter_id" => encounter.id}, "current_user" => current_user)
+  end
+
+  context "policy violation" do
+
+    let(:current_user){ User.new }
+
+    subject(:result) do
+      Combat::Create.({"encounter_id" => encounter.id})
+    end
+
+    specify do
+      expect( result.success? ).to be false
+    end
+
   end
 
   context "invalid params" do
 
     specify do
-      result = Combat::Create.()
+      result = Combat::Create.({}, "current_user" => current_user)
       expect( result.success? ).to be false
     end
 

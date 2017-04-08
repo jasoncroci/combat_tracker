@@ -6,10 +6,30 @@ RSpec.describe Encounter::Update, type: :concept do
     Encounter.create!(name:"Test",challenge_rating:10,experience_points:10000)
   end
 
+  let(:params) do
+    {id: encounter.id, "encounter" => {name: "Encounter", challenge_rating: 5, experience_points: 9000}}
+  end
+
+  let(:current_user){ User.new(admin:true) }
+
+  context "policy violation" do
+
+    let(:current_user){ User.new }
+
+    subject(:result) do
+      Encounter::Update.(params)
+    end
+
+    specify do
+      expect( result.success? ).to be false
+    end
+
+  end
+
   context "invalid input" do
 
     subject(:result) do
-      Encounter::Update.()
+      Encounter::Update.({}, "current_user" => current_user)
     end
 
     specify do
@@ -21,7 +41,7 @@ RSpec.describe Encounter::Update, type: :concept do
   context "success" do
 
     subject(:result) do
-      Encounter::Update.(id: encounter.id, "encounter" => {name: "Encounter", challenge_rating: 5, experience_points: 9000})
+      Encounter::Update.(params, "current_user" => current_user)
     end
 
     specify do

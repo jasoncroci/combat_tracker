@@ -6,10 +6,30 @@ RSpec.describe Character::Update, type: :concept do
     Character.create!(name:"Test",hit_points:100,armor_class:10)
   end
 
+  let(:params) do
+    {id: character.id, "character" => {name: "Bob", hit_points: 99, armor_class: 9}}
+  end
+
+  let(:current_user){ User.new(admin:true) }
+
+  context "policy violation" do
+
+    let(:current_user){ User.new }
+
+    subject(:result) do
+      Character::Update.(params)
+    end
+
+    specify do
+      expect( result.success? ).to be false
+    end
+
+  end
+
   context "invalid input" do
 
     subject(:result) do
-      Character::Update.()
+      Character::Update.({}, "current_user" => current_user)
     end
 
     specify do
@@ -21,7 +41,7 @@ RSpec.describe Character::Update, type: :concept do
   context "success" do
 
     subject(:result) do
-      Character::Update.(id: character.id, "character" => {name: "Bob", hit_points: 99, armor_class: 9})
+      Character::Update.(params, "current_user" => current_user)
     end
 
     specify do

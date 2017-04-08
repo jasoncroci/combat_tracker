@@ -2,10 +2,30 @@ require 'rails_helper'
 
 RSpec.describe Character::Edit, type: :concept do
 
+  let!(:character) do
+    Character.create!(name:"Test",hit_points:100,armor_class:10)
+  end
+
+  let(:current_user){ User.new(admin:true) }
+
+  context "policy violation" do
+
+    let(:current_user){ User.new }
+
+    subject(:result) do
+      Character::Edit.(id: character.id)
+    end
+
+    specify do
+      expect( result.success? ).to be false
+    end
+
+  end
+
   context "invalid input" do
 
     subject(:result) do
-      Character::Edit.()
+      Character::Edit.({}, "current_user" => current_user)
     end
 
     specify do
@@ -16,12 +36,8 @@ RSpec.describe Character::Edit, type: :concept do
 
   context "success" do
 
-    let!(:character) do
-      Character.create!(name:"Test",hit_points:100,armor_class:10)
-    end
-
     subject(:result) do
-      Character::Edit.(id: character.id)
+      Character::Edit.({id: character.id}, "current_user" => current_user)
     end
 
     specify do

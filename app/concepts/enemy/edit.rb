@@ -1,4 +1,5 @@
 class Enemy::Edit < Trailblazer::Operation
+  step Macro::AdminPolicy()
   step :encounter!
   step Model( Enemy, :find_by )
   step Contract::Build( constant: Enemy::Contract::Create )

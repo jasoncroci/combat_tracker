@@ -2,8 +2,20 @@ require 'rails_helper'
 
 RSpec.describe Encounter::New, type: :concept do
 
+  let(:current_user){ User.new(admin:true) }
+
   subject(:result) do
-    Encounter::New.()
+    Encounter::New.({}, "current_user" => current_user)
+  end
+
+  context "policy violation" do
+
+    let(:current_user){ User.new }
+
+    specify do
+      expect( result.success? ).to be false
+    end
+
   end
 
   specify do

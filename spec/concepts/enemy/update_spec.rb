@@ -10,10 +10,30 @@ RSpec.describe Enemy::Update, type: :concept do
     Enemy.create!(name:"Test",hit_points:100,armor_class:10, encounter: encounter)
   end
 
+  let(:current_user){ User.new(admin:true) }
+
+  let(:params) do
+    {id: enemy.id, "enemy" => {name: "Bob", hit_points: 99, armor_class: 9}, "encounter_id" => encounter.id}
+  end
+
+  context "policy violation" do
+
+    let(:current_user){ User.new }
+
+    subject(:result) do
+      Enemy::Update.(params)
+    end
+
+    specify do
+      expect( result.success? ).to be false
+    end
+
+  end
+
   context "invalid input" do
 
     subject(:result) do
-      Enemy::Update.()
+      Enemy::Update.({}, "current_user" => current_user)
     end
 
     specify do
@@ -25,7 +45,7 @@ RSpec.describe Enemy::Update, type: :concept do
   context "success" do
 
     subject(:result) do
-      Enemy::Update.(id: enemy.id, "enemy" => {name: "Bob", hit_points: 99, armor_class: 9}, "encounter_id" => encounter.id)
+      Enemy::Update.(params, "current_user" => current_user)
     end
 
     specify do

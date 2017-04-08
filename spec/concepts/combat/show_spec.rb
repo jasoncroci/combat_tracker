@@ -6,14 +6,16 @@ RSpec.describe Combat::Show, type: :concept do
     Combat.create!(data:{"encounter" => {"name" => "Encounter1"}})
   end
 
+  let(:current_user){ User.new }
+
   subject(:result) do
-    Combat::Show.(id: combat.id)
+    Combat::Show.({id: combat.id}, "current_user" => current_user)
   end
 
   context "invalid params" do
 
     specify do
-      result = Combat::Show.()
+      result = Combat::Show.({}, "current_user" => current_user)
       expect( result.success? ).to be false
     end
 

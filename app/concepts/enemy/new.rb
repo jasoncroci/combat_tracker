@@ -1,4 +1,5 @@
 class Enemy::New < Trailblazer::Operation
+  step Macro::AdminPolicy()
   step :encounter!
   step :model!
   step Contract::Build( constant: Enemy::Contract::Create )

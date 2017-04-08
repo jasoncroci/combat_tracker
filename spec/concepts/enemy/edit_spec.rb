@@ -6,10 +6,34 @@ RSpec.describe Enemy::Edit, type: :concept do
     Encounter.create!(name:"Encounter")
   end
 
+  let!(:enemy) do
+    Enemy.create!(name:"Test", hit_points:100, armor_class:10, encounter: encounter)
+  end
+
+  let(:current_user){ User.new(admin:true) }
+
+  let(:params) do
+    {id: enemy.id, "encounter_id" => encounter.id}
+  end
+
+  context "policy violation" do
+
+    let(:current_user){ User.new }
+
+    subject(:result) do
+      Enemy::Edit.(params)
+    end
+
+    specify do
+      expect( result.success? ).to be false
+    end
+
+  end
+
   context "invalid input" do
 
     subject(:result) do
-      Enemy::Edit.()
+      Enemy::Edit.({}, "current_user" => current_user)
     end
 
     specify do
@@ -20,12 +44,8 @@ RSpec.describe Enemy::Edit, type: :concept do
 
   context "success" do
 
-    let!(:enemy) do
-      Enemy.create!(name:"Test", hit_points:100, armor_class:10, encounter: encounter)
-    end
-
     subject(:result) do
-      Enemy::Edit.(id: enemy.id, "encounter_id" => encounter.id)
+      Enemy::Edit.(params, "current_user" => current_user)
     end
 
     specify do

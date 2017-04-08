@@ -1,4 +1,5 @@
 class Combat::Create < Trailblazer::Operation
+  step Macro::AdminPolicy()
   step :encounter!
   step :enemies!
   step :characters!
