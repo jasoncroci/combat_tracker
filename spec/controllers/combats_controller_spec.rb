@@ -88,4 +88,34 @@ RSpec.describe CombatsController, type: :controller do
 
   end
 
+  describe "#current_combat" do
+
+    context "failure" do
+
+      before do
+        allow( Combat::Current ).to receive(:call).and_return result
+      end
+
+      let(:result) do
+        Trailblazer::Operation::Result.new(false, {})
+      end
+
+      specify do
+        get :current_combat
+        expect( response ).to redirect_to root_path
+      end
+
+    end
+
+    context "success" do
+
+      specify do
+        get :current_combat
+        expect(response.status).to eq(200)
+      end
+
+    end
+
+  end
+
 end

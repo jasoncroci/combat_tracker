@@ -1,5 +1,12 @@
 class CombatsController < ApplicationController
-  include ::Cell::Erb
+  
+  def current_combat
+    run Combat::Current do
+      return render cell(Combat::Cell::Show, @form, current_user: current_user)
+    end
+
+    redirect_to root_path
+  end
 
   def create
     run Combat::Create do |result|
