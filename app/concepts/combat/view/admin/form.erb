@@ -1,12 +1,12 @@
-<%= bootstrap_form_for combat, remote: true, html: { id: "combat_form" } do |f| %>
+<%= bootstrap_form_for model, remote: true, html: { id: "combat_form" } do |f| %>
   <%= f.hidden_field :current_round %>
   <%= f.hidden_field :current_turn %>
-  <%= f.fields_for :encounter do |encounter_form| %>
+  <%= my_fields_for f, :encounter do |encounter_form| %>
     <%= encounter_form.hidden_field :name %>
     <%= encounter_form.hidden_field :experience_points %>
     <%= encounter_form.hidden_field :challenge_rating %>
   <% end %>
-  <%= f.fields_for :enemies do |enemy_form| %>
+  <%= my_fields_for f, :enemies do |enemy_form| %>
     <%= enemy_form.hidden_field :id %>
     <%= enemy_form.hidden_field :name %>
     <%= enemy_form.hidden_field :hit_points, id: "#{enemy_form.object.identity}_hit_points_field" %>
@@ -15,7 +15,7 @@
     <%= enemy_form.hidden_field :current_hit_points, id: "#{enemy_form.object.identity}_current_hit_points_field" %>
     <%= enemy_form.hidden_field :initiative, id: "#{enemy_form.object.identity}_initiative_field" %>
   <% end %>
-  <%= f.fields_for :characters do |character_form| %>
+  <%= my_fields_for f, :characters do |character_form| %>
     <%= character_form.hidden_field :id %>
     <%= character_form.hidden_field :name %>
     <%= character_form.hidden_field :hit_points, id: "#{character_form.object.identity}_hit_points_field" %>
@@ -23,6 +23,7 @@
     <%= character_form.hidden_field :current_hit_points, id: "#{character_form.object.identity}_current_hit_points_field" %>
     <%= character_form.hidden_field :initiative, id: "#{character_form.object.identity}_initiative_field" %>
   <% end %>
+
   <button class="btn btn-info" id="begin_combat_btn" type="submit">Next</button>
   <%= f.submit 'Save', id: "save_btn" %>
 <% end %>

@@ -1,0 +1,20 @@
+<h1>Combat</h1>
+
+<div class="container-fluid">
+  <div class="table-responsive bordered">
+    <table id="combatant_table" class="table table-hover table-condensed">
+      <caption>Round: <span><%= current_round %></span></caption>
+      <thead>
+        <tr>
+          <td>Initiative</td>
+          <td>Name</td>
+          <td>Hit Points</td>
+        </tr>
+      </thead>
+      <tbody>
+      <%= cell(Combat::Cell::User::Combatant, collection: combatants) %>
+      </tbody>
+    </table>
+    <%= cell(Combat::Cell::User::Form, model) %>
+  </div>
+</div>

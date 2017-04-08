@@ -1,0 +1,13 @@
+<%= bootstrap_form_for model, remote: true, html: { id: "combat_form" } do |f| %>
+  <%= f.hidden_field :current_round %>
+  <%= f.hidden_field :current_turn %>
+
+  <%= my_fields_for f, :enemies do |enemy_form| %>
+    <%= enemy_form.hidden_field :hit_points, id: "#{enemy_form.object.identity}_hit_points_field" %>
+    <%= enemy_form.hidden_field :current_hit_points, id: "#{enemy_form.object.identity}_current_hit_points_field" %>
+  <% end %>
+  <%= my_fields_for f, :characters do |character_form| %>
+    <%= character_form.hidden_field :hit_points, id: "#{character_form.object.identity}_hit_points_field" %>
+    <%= character_form.hidden_field :current_hit_points, id: "#{character_form.object.identity}_current_hit_points_field" %>
+  <% end %>
+<% end %>

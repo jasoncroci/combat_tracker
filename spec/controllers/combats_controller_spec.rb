@@ -7,7 +7,8 @@ RSpec.describe CombatsController, type: :controller do
   end
 
   before(:each) do
-    controller.stub(:authenticate_user!).and_return true
+    allow( controller ).to receive(:authenticate_user!).and_return true
+    allow( controller ).to receive(:current_user).and_return double(admin?:false)
   end
 
   describe "#create" do
@@ -83,7 +84,7 @@ RSpec.describe CombatsController, type: :controller do
 
     specify do
       get :show, params: { id: combat.id }
-      expect( response ).to render_template :show
+      expect(response.status).to eq(200)
     end
 
   end

@@ -1,4 +1,5 @@
 class CombatsController < ApplicationController
+  include ::Cell::Erb
 
   def create
     run Combat::Create do |result|
@@ -18,6 +19,6 @@ class CombatsController < ApplicationController
   def show
     run Combat::Show
 
-    render :show, locals: { combat: @form }
+    render cell(Combat::Cell::Show, @form, current_user: current_user)
   end
 end

@@ -1,0 +1,16 @@
+<tr id="<%= identity %>">
+  <td scope="row"><%= initiative %></td>
+
+  <td name="<%= identity %>_name" class="<%= combatant_class_name %>">
+    <%= name %>
+  </td>
+
+  <td>
+    <%= link_to_if character?, current_hit_points, "#", {
+      name: "#{identity}_current_hit_points",
+      "data-type" => "text",
+      "data-title" => "Enter hit points"
+      }
+    %>
+  </td>
+</tr>
