@@ -68,16 +68,18 @@ $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
     App.combat.updateTurn(new_selected_item);
   };
 
-  this.App.combat.updateEnemyCondition = function(item, current_hit_points, remove_from_play){
-    var field_name = item.attr("name").replace("_current","")+"_field";
+  this.App.combat.updateEnemyCondition = function(item, current_hit_points, total_hit_points, remove_from_play){
     var current_hit_points = parseInt(current_hit_points);
-    var total_hit_points = parseInt($("#" + field_name).val());
+    var total_hit_points = parseInt(total_hit_points);
     if( current_hit_points <= 0 && remove_from_play ){
       item.closest("tr").remove();
     } else if( current_hit_points <= total_hit_points/2 ){
-      item.closest("td").addClass("danger");
+      //item.closest("td").addClass("danger");
+      item.addClass("bloodied")
+      item.closest("tr").find("[name$='_name']").addClass("bloodied");
     } else{
-      item.closest("td").removeClass("danger");
+      item.removeClass("bloodied")
+      item.closest("tr").find("[name$='_name']").removeClass("bloodied");
     }
   };
 
@@ -86,10 +88,10 @@ $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
     initiative_elem.html(initiative);
   };
 
-  this.App.combat.updateHitPoints = function(identity, hit_points, remove_from_play){
+  this.App.combat.updateHitPoints = function(identity, current_hit_points, total_hit_points, remove_from_play){
     var hit_point_elem = $("a[name='" + identity + "_current_hit_points']");
-    hit_point_elem.html(hit_points);
-    App.combat.updateEnemyCondition(hit_point_elem, hit_point_elem.html(), remove_from_play)
+    hit_point_elem.html(current_hit_points);
+    App.combat.updateEnemyCondition(hit_point_elem, hit_point_elem.html(), total_hit_points, remove_from_play)
   };
 
   this.App.combat.updateUI = function(data){
@@ -99,13 +101,14 @@ $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
     $.each(data.enemies, function( index, enemy ) {
       App.combat.updateInitiative("enemy_" + enemy.id, enemy.initiative);
       App.combat.updateInitiativeOrder( $("tr#enemy_" + enemy.id).closest("tr"), enemy.initiative );
-      App.combat.updateHitPoints("enemy_" + enemy.id, enemy.current_hit_points, true);
+      App.combat.updateHitPoints("enemy_" + enemy.id, enemy.current_hit_points, enemy.hit_points, true);
     });
 
     $.each(data.characters, function( index, character ) {
+      console.log(character)
       App.combat.updateInitiative("character_" + character.id, character.initiative);
       App.combat.updateInitiativeOrder( $("tr#character_" + character.id).closest("tr"), character.initiative );
-      App.combat.updateHitPoints("character_" + character.id, character.current_hit_points, false);
+      App.combat.updateHitPoints("character_" + character.id, character.current_hit_points, character.hit_points, false);
     });
   };
 
@@ -117,7 +120,13 @@ $(document).ready(function() {
   App.combat.updateCurrentTurn($("#combat_current_turn").val());
 
   $("a[name$='_current_hit_points']").each(function(){
-      App.combat.updateEnemyCondition($(this), $(this).html(), $(this).attr("name").indexOf("enemy") > -1)
+      var field_name = $(this).attr("name").replace("_current","")+"_field";
+      App.combat.updateEnemyCondition(
+        $(this),
+        $(this).html(),
+        $("#" + field_name).val(),
+        $(this).attr("name").indexOf("enemy") > -1
+      );
   });
 
   $("#begin_combat_btn").click(function(e){
@@ -140,8 +149,14 @@ $(document).ready(function() {
   });
 
   $('#combatant_table a[name$="_current_hit_points"]').on('save', function(e, params) {
+    var field_name = $(this).attr("name").replace("_current","")+"_field";
     App.combat.updateField( $(this).attr("name"), params.newValue );
-    App.combat.updateEnemyCondition($(this), params);
+    App.combat.updateEnemyCondition(
+      $(this),
+      params.newValue,
+      $("#" + field_name).val(),
+      $(this).attr("name").indexOf("enemy") > -1
+    );
   });
 
 });

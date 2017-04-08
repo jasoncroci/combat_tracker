@@ -18,7 +18,7 @@
   <%= f.fields_for :characters do |character_form| %>
     <%= character_form.hidden_field :id %>
     <%= character_form.hidden_field :name %>
-    <%= character_form.hidden_field :hit_points %>
+    <%= character_form.hidden_field :hit_points, id: "#{character_form.object.identity}_hit_points_field" %>
     <%= character_form.hidden_field :armor_class %>
     <%= character_form.hidden_field :current_hit_points, id: "#{character_form.object.identity}_current_hit_points_field" %>
     <%= character_form.hidden_field :initiative, id: "#{character_form.object.identity}_initiative_field" %>

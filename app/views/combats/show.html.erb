@@ -16,7 +16,6 @@
       <%= render partial: 'table_rows', locals: { combatants: combat.combatants } %>
       </tbody>
     </table>
+    <%= render partial: 'form', locals: { combat: combat } %>
   </div>
 </div>
-
-<%= render partial: 'form', locals: { combat: combat } %>

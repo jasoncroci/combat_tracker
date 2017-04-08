@@ -1,3 +1,19 @@
 // Place all the styles related to the combats controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.bloodied{
+  color: red;
+  font-weight: bold;
+  font-size: 11pt;
+}
+
+.character{
+  font-size:14pt;
+  font-family: "Fantasy", Garamond, 'Fantasy';
+}
+
+.enemy{
+  font-size:11pt;
+  font-family: "Comic Sans MS", Garamond, 'Comic Sans MS';
+  font-style:italic
+}
