@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     post 'combats', to: "combats#create", as: :combats
   end
   resources :characters
-  resources :combats, only: [:show,:update]
+  resources :combats, only: [:show,:update,:destroy]
   # Lastest battle
   get 'combat', to: "combats#current_combat", as: :current_combat
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

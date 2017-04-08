@@ -1,5 +1,5 @@
 class CombatsController < ApplicationController
-  
+
   def current_combat
     run Combat::Current do
       return render cell(Combat::Cell::Show, @form, current_user: current_user)
@@ -26,6 +26,12 @@ class CombatsController < ApplicationController
   def show
     run Combat::Show do
       return render cell(Combat::Cell::Show, @form, current_user: current_user)
+    end
+  end
+
+  def destroy
+    run Combat::Delete do
+      return head :accepted
     end
   end
 end

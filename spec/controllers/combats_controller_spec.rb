@@ -118,4 +118,13 @@ RSpec.describe CombatsController, type: :controller do
 
   end
 
+  describe "#destroy" do
+
+    specify do
+      delete :destroy, params: { id: combat.id }
+      expect(response.status).to eq(202)
+    end
+
+  end
+
 end
