@@ -10,8 +10,6 @@ $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
   this.App || (this.App = {});
   this.App.combat || (this.App.combat = {});
 
-  this.App.isAdmin = false;
-
   this.App.combat.updateCurrentTurn = function(current_turn){
     if( current_turn ){
       $("tbody tr").each(function(){
@@ -98,14 +96,15 @@ $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
     var hit_point_elem = $("a[name='" + identity + "_current_hit_points']");
     var hit_point_field = $("#" + identity + "_current_hit_points_field");
     // only update character's hp if user
-    if(identity.indexOf("character") > -1 || App.combat.isAdmin){
+    if(identity.indexOf("character") > -1 || App.util.isAuthor(App.combat.config.id)){
       hit_point_elem.html(current_hit_points);
     }
     hit_point_field.val(current_hit_points)
     App.combat.updateCombatantCondition(hit_point_elem, hit_point_field.val(), total_hit_points, remove_from_play);
   };
 
-  this.App.combat.updateUI = function(data){
+  this.App.combat.updateUI = function(config, data){
+    App.combat.config = config;
     App.combat.updateRound(data.current_round);
     App.combat.updateCurrentTurn(data.current_turn);
 

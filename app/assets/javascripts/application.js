@@ -15,3 +15,5 @@
 //= require turbolinks
 //= require bootstrap.min
 //= require bootstrap-editable.min
+//= require cookie
+//= require util

@@ -4,6 +4,7 @@ class Combat::Update < Trailblazer::Operation
   step Contract::Build( constant: Combat::Contract::Create )
   step Contract::Validate(key: "combat")
   step :update!
+  step :broadcaster!
   success :broadcast!
 
   def update!(options,model:,**)
@@ -12,7 +13,11 @@ class Combat::Update < Trailblazer::Operation
     end
   end
 
+  def broadcaster!(options,current_user:,**)
+    options["broadcaster"] = Combat::Broadcaster::Update.(options)
+  end
+
   def broadcast!(options,**)
-    ActionCable.server.broadcast "combat_channel", options["contract.default"].to_nested_hash
+    ActionCable.server.broadcast "combat_channel", options["broadcaster"]
   end
 end

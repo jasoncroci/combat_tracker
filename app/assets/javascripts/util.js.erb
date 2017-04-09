@@ -1,0 +1,12 @@
+(function() {
+  this.App || (this.App = {});
+  this.App.util || (this.App.util = {});
+
+  this.App.util.userId = function(){
+    return Cookies.get('user.id') || 0;
+  };
+
+  this.App.util.isAuthor = function(id){
+    return parseInt(id) === App.util.userId();
+  }
+}).call(this);
