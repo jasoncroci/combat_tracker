@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Encounter::Edit, type: :concept do
 
   let!(:encounter) do
-    Encounter.create!(name:"Encounter1",challenge_rating:10,experience_points:10000)
+    Encounter.create!(name:"Encounter1",challenge_rating:10,experience_points:10000, user: user)
   end
 
   let(:current_user){ User.new(admin:true) }

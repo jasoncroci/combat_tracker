@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe Combat::Contract::Create, type: :contract do
+RSpec.describe Combat::Contract::Create, type: :concept do
 
   let!(:encounter) do
-    Encounter.create!(name: "Encounter1")
+    Encounter.create!(name: "Encounter1", user: user)
   end
 
   let!(:character1) do

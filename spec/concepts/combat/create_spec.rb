@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Combat::Create, type: :concept do
 
   let!(:encounter) do
-    Encounter.create!(name:"Encounter")
+    Encounter.create!(name:"Encounter", user: user)
   end
 
   let!(:enemy1) do

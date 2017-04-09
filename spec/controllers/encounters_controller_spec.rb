@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe EncountersController, type: :controller do
 
   let!(:encounter) do
-    Encounter.create!(name:"Test", challenge_rating:10, experience_points:1000)
+    Encounter.create!(name:"Test", challenge_rating:10, experience_points:1000,user:user)
   end
 
   before(:each) do

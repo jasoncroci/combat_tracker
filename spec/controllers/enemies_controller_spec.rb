@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe EnemiesController, type: :controller do
 
   let!(:encounter) do
-    Encounter.create(name:"Encounter1")
+    Encounter.create(name:"Encounter1",user:user)
   end
 
   let!(:enemy) do

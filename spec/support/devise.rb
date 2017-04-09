@@ -4,5 +4,6 @@ RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include DeviseUser::Helpers, type: :controller
   config.include DeviseUser::Helpers, type: :concept
+  config.include DeviseUser::Helpers, type: :model
   config.include Devise::Test::ControllerHelpers, type: :view
 end
