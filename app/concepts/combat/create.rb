@@ -36,9 +36,10 @@ class Combat::Create < Trailblazer::Operation
     options["contract.default"].start_combat!
   end
 
-  def save!(options,model:,**)
+  def save!(options,model:,current_user:,**)
     options["contract.default"].save do |hash|
       model.data = hash
+      model.user = current_user
       model.save
     end
   end

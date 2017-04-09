@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Combat::Update, type: :concept do
 
   let!(:combat) do
-    Combat.create!(data:{})
+    Combat.create!(data:{}, user: user)
   end
 
   let(:data) do

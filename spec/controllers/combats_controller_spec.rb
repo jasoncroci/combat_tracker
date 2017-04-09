@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe CombatsController, type: :controller do
 
   let!(:combat) do
-    Combat.create!(data:{encounter:{name:"Test"}})
+    Combat.create!(data:{encounter:{name:"Test"}}, user: user)
   end
 
   before(:each) do

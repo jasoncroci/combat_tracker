@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Combat::Show, type: :concept do
 
   let!(:combat) do
-    Combat.create!(data:{"encounter" => {"name" => "Encounter1"}})
+    Combat.create!(data:{"encounter" => {"name" => "Encounter1"}}, user: user)
   end
 
   let(:current_user){ User.new }
