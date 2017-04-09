@@ -43,8 +43,8 @@ class Combat::Create < Trailblazer::Operation
     end
   end
 
-  def broadcast!(options,model:,**)
-    ActionCable.server.broadcast "waiting_room_channel", url: combat_path(model)
+  def broadcast!(options,**)
+    ActionCable.server.broadcast "waiting_room_channel", url: current_combat_path
   end
 
 end

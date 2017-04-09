@@ -1,0 +1,8 @@
+<%= javascript_tag do %>
+(function() {
+  this.App || (this.App = {});
+  this.App.combat || (this.App.combat = {});
+
+  this.App.isAdmin = <%= admin? %>;
+}).call(this);
+<% end %>

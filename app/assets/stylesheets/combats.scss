@@ -17,3 +17,11 @@
   font-family: "Comic Sans MS", Garamond, 'Comic Sans MS';
   font-style:italic
 }
+a.link{
+  color: black;
+}
+
+a.link:hover {
+    text-decoration: none;
+    cursor: pointer;
+}

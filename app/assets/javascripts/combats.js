@@ -10,6 +10,8 @@ $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
   this.App || (this.App = {});
   this.App.combat || (this.App.combat = {});
 
+  this.App.isAdmin = false;
+
   this.App.combat.updateCurrentTurn = function(current_turn){
     if( current_turn ){
       $("tbody tr").each(function(){
@@ -72,7 +74,7 @@ $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
     App.combat.updateTurn(new_selected_item);
   };
 
-  this.App.combat.updateEnemyCondition = function(item, current_hit_points, total_hit_points, remove_from_play){
+  this.App.combat.updateCombatantCondition = function(item, current_hit_points, total_hit_points, remove_from_play){
     var current_hit_points = parseInt(current_hit_points);
     var total_hit_points = parseInt(total_hit_points);
     if( current_hit_points <= 0 && remove_from_play ){
@@ -94,8 +96,13 @@ $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
 
   this.App.combat.updateHitPoints = function(identity, current_hit_points, total_hit_points, remove_from_play){
     var hit_point_elem = $("a[name='" + identity + "_current_hit_points']");
-    hit_point_elem.html(current_hit_points);
-    App.combat.updateEnemyCondition(hit_point_elem, hit_point_elem.html(), total_hit_points, remove_from_play)
+    var hit_point_field = $("#" + identity + "_current_hit_points_field");
+    // only update character's hp if user
+    if(identity.indexOf("character") > -1 || App.combat.isAdmin){
+      hit_point_elem.html(current_hit_points);
+    }
+    hit_point_field.val(current_hit_points)
+    App.combat.updateCombatantCondition(hit_point_elem, hit_point_field.val(), total_hit_points, remove_from_play);
   };
 
   this.App.combat.updateUI = function(data){
@@ -109,7 +116,6 @@ $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
     });
 
     $.each(data.characters, function( index, character ) {
-      console.log(character)
       App.combat.updateInitiative("character_" + character.id, character.initiative);
       App.combat.updateInitiativeOrder( $("tr#character_" + character.id).closest("tr"), character.initiative );
       App.combat.updateHitPoints("character_" + character.id, character.current_hit_points, character.hit_points, false);
@@ -125,9 +131,9 @@ $(document).ready(function() {
 
   $("a[name$='_current_hit_points']").each(function(){
       var field_name = $(this).attr("name").replace("_current","")+"_field";
-      App.combat.updateEnemyCondition(
+      App.combat.updateCombatantCondition(
         $(this),
-        $(this).html(),
+        $("#" + $(this).attr("name") + "_field").val(),
         $("#" + field_name).val(),
         $(this).attr("name").indexOf("enemy") > -1
       );
@@ -156,7 +162,7 @@ $(document).ready(function() {
   $('#combatant_table a[name$="_current_hit_points"]').on('save', function(e, params) {
     var field_name = $(this).attr("name").replace("_current","")+"_field";
     App.combat.updateField( $(this).attr("name"), params.newValue );
-    App.combat.updateEnemyCondition(
+    App.combat.updateCombatantCondition(
       $(this),
       params.newValue,
       $("#" + field_name).val(),
