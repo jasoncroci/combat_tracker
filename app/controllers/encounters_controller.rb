@@ -1,7 +1,7 @@
 class EncountersController < ApplicationController
 
   def index
-    render :index, locals: { encounters: Encounter.all }
+    render :index, locals: { encounters: Encounter.by_user(current_user) }
   end
 
   def new
