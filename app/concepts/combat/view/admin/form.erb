@@ -24,6 +24,9 @@
     <%= character_form.hidden_field :initiative, id: "#{character_form.object.identity}_initiative_field" %>
   <% end %>
 
-  <button class="btn btn-info" id="begin_combat_btn" type="submit">Next</button>
-  <%= f.submit 'Save', id: "save_btn" %>
+  <%= f.submit 'Save', id: "save_btn"  %>
+  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Finish</button>
+  <button class="btn btn-info" id="begin_combat_btn" type="submit"><%= button_text %></button>
 <% end %>
+
+<%= cell(Combat::Cell::Admin::DeleteModal, model) %>

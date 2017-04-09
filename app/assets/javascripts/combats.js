@@ -136,6 +136,7 @@ $(document).ready(function() {
   $("#begin_combat_btn").click(function(e){
     e.preventDefault();
     App.combat.nextTurn();
+    $(this).html("Next");
   });
 
   $('#combatant_table a[data-type="text"]').editable({
