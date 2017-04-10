@@ -1,0 +1,44 @@
+<%= javascript_include_tag 'encounters' %>
+
+<h1><%= name %></h1>
+
+<div class="container">
+  <h4>CR <%= challenge_rating %> <small>(<%= number_with_delimiter(experience_points) %> xp)</small></h4>
+
+  <div class="table-responsive bordered clearfix">
+    <table id="enemy_table" class="table table-hover table-condensed">
+      <caption>Enemies</caption>
+      <thead>
+        <tr>
+          <td>#</td>
+          <td>Name</td>
+          <td>Hit Points</td>
+          <td>Armor Class</td>
+        </tr>
+      </thead>
+      <tbody>
+      <%= cell(Encounter::Cell::Enemy, collection: enemies, encounter: model) %>
+      </tbody>
+    </table>
+  </div>
+  <%= bootstrap_form_for model.model do |f| %>
+    <%= f.hidden_field :name %>
+    <%= f.hidden_field :challenge_rating %>
+    <%= f.hidden_field :experience_points %>
+    <div class="hidden">
+    <%= f.nested_fields_for :enemies do |ff| %>
+      <%= ff.text_field :name %>
+      <%= ff.text_field :hit_points %>
+      <%= ff.text_field :armor_class %>
+    <% end %>
+    </div>
+    <div class="row" style="padding-bottom:20px;">
+      <button class="btn btn-success add_nested_fields_link" data-id="add_enemy" data-association-path="encounter_enemies" data-object-class="enemy">Add Enemy</button>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+      <%= f.primary %>
+    </div>
+  <% end %>
+  </div>
+</div>

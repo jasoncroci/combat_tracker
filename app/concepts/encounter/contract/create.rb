@@ -4,7 +4,7 @@ module Encounter::Contract
     property :challenge_rating
     property :experience_points
 
-    collection :enemies do
+    collection :enemies, populate_if_empty: Enemy, default: [] do
       property :id
       property :name
       property :armor_class

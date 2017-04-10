@@ -35,7 +35,7 @@ class EncountersController < ApplicationController
   def show
     run Encounter::Edit
 
-    render :show, locals: { form: @form }
+    render cell(Encounter::Cell::Show, @form)
   end
 
 end

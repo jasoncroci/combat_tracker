@@ -64,3 +64,4 @@ gem 'dry-validation'
 gem 'dry-types'
 gem 'bootstrap_form'
 gem "paranoia", "~> 2.2"
+gem 'nested_form_fields'
