@@ -21,14 +21,14 @@ class CharactersController < ApplicationController
 
   def update
     run Character::Update do |result|
-      return redirect_to characters_path
+      return render json: @form, status: :accepted
     end
 
-    render :edit, locals: { form: @form }
+    render json: @form, status: :unprocessable_entity
   end
 
   def index
-    render :index, locals: { characters: Character.all }
+    render cell(Character::Cell::List, Character.all)
   end
 
 end

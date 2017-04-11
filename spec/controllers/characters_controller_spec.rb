@@ -14,7 +14,7 @@ RSpec.describe CharactersController, type: :controller do
 
     specify do
       get :index
-      expect( response ).to render_template :index
+      expect(response.status).to eq(200)
     end
 
   end
@@ -85,7 +85,7 @@ RSpec.describe CharactersController, type: :controller do
 
       specify do
         put :update, params: {id: character.id}
-        expect( response ).to render_template :edit
+        expect( response.status ).to eq 422
       end
 
     end
@@ -98,7 +98,7 @@ RSpec.describe CharactersController, type: :controller do
 
       specify do
         put :update, params: {id: character.id}
-        expect( response ).to redirect_to characters_path
+        expect( response.status ).to eq 202
       end
 
     end

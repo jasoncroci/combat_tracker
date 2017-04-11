@@ -1,0 +1,17 @@
+<%= javascript_include_tag 'characters' %>
+
+<div class="table-responsive bordered clearfix">
+  <table id="character_table" class="table table-hover table-condensed">
+    <caption>Characters</caption>
+    <thead>
+      <tr>
+        <td>Name</td>
+        <td>Hit Points</td>
+        <td>Armor Class</td>
+      </tr>
+    </thead>
+    <tbody>
+      <%= cell(Character::Cell::Show, collection: model) %>
+    </tbody>
+  </table>
+</div>
