@@ -2,8 +2,12 @@ require 'rails_helper'
 
 RSpec.describe Combat::Show, type: :concept do
 
+  let(:encounter) do
+    Encounter.create!(name:"Test",challenge_rating:10,experience_points:10000,user:user)
+  end
+
   let!(:combat) do
-    Combat.create!(data:{"encounter" => {"name" => "Encounter1"}}, user: user)
+    Combat.create!(data:{"encounter" => {"name" => "Encounter1"}}, user: user, encounter: encounter)
   end
 
   let(:current_user){ User.new }
