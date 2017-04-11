@@ -1,18 +1,26 @@
 <h1>Encounters</h1>
 
 <div class="container-fluid">
+  <% encounters.each do |encounter| %>
 
-<% encounters.each do |encounter| %>
+    <div class="row">
+      <%= bootstrap_form_for(encounter, url: encounter_combats_path(encounter), method: :post, html: {class:'form-inline'}) do |f| %>
+        <div class="form-group">
+          <h4 class="encounter_title"><%= link_to encounter.name, edit_encounter_path(encounter) %></h4>
+        </div>
+        <button id="encounter_<%= encounter.id %>_enemies_btn" class="btn btn-primary btn-sm" data-url="<%= encounter_path(encounter) %>">Enemies</button>
+        <%= f.submit 'Start combat', class: 'btn btn-success btn-sm' %>
+      <% end %>
+    </div>
 
-<div class="row">
-  <p>
-    <%= link_to encounter.name, edit_encounter_path(encounter) %>
-    <%= bootstrap_form_for(encounter, url: encounter_combats_path(encounter), method: :post) do |f| %>
-      <%= f.submit 'Start combat' %>
-    <% end %>
-  </p>
+  <% end %>
 </div>
 
+
+<%= javascript_tag do %>
+ <%# TODO: Add to coffeescript? %>
+ $("[id$='_enemies_btn'").on('click', function(e){
+   e.preventDefault();
+   window.location.href = $(this).attr("data-url") ;
+ });
 <% end %>
-
-</div>

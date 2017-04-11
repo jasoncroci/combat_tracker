@@ -3,12 +3,10 @@ class Encounter::Create < Trailblazer::Operation
   step Model( Encounter, :new )
   step Contract::Build( constant: Encounter::Contract::Create )
   step Contract::Validate(key: "encounter")
-  step :save!
+  step :user!
+  step Contract::Persist()
 
-  def save!(options,model:,current_user:,**)
-    options["contract.default"].save do |hash|
-      model.user = current_user
-      model.save(hash)
-    end
+  def user!(options,model:,current_user:,**)
+    model.user = current_user
   end
 end
