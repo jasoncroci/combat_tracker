@@ -2,12 +2,12 @@ require 'rails_helper'
 
 RSpec.describe Enemy, type: :model do
 
-  let!(:encounter) do
-    Encounter.create!(name: "Encounter1",user:user)
+  let(:encounter) do
+    create(:encounter, user: create(:admin))
   end
 
   let!(:enemy) do
-    Enemy.create!(name:"Enemy1", encounter_id: encounter.id)
+    create(:enemy, encounter: encounter)
   end
 
   describe "#encounter" do

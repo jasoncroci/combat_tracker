@@ -16,7 +16,7 @@ RSpec.describe WaitingRoomController, type: :controller do
     context "logged in as user" do
 
       before(:each) do
-        sign_in user(:user)
+        sign_in create(:user)
       end
 
       specify do
@@ -29,7 +29,7 @@ RSpec.describe WaitingRoomController, type: :controller do
     context "logged in as admin" do
 
       before(:each) do
-        sign_in user(:admin)
+        sign_in create(:admin)
       end
 
       specify do

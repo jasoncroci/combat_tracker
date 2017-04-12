@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Encounter::Create, type: :concept do
 
   let(:params) do
-    {"encounter" => {name: "SomeEncounter", challenge_rating: 10, experience_points: 2000}}
+    attributes_for(:encounter)
   end
 
   let(:current_user){ User.new(admin:true) }
@@ -13,7 +13,9 @@ RSpec.describe Encounter::Create, type: :concept do
     let(:current_user){ User.new }
 
     subject(:result) do
-      Encounter::Create.(params)
+      Encounter::Create.(
+        {"encounter" => params}
+      )
     end
 
     specify do
@@ -25,7 +27,9 @@ RSpec.describe Encounter::Create, type: :concept do
   context "invalid input" do
 
     subject(:result) do
-      Encounter::Create.({"encounter" => {}}, "current_user" => current_user)
+      Encounter::Create.(
+        {"encounter" => {}}, "current_user" => current_user
+      )
     end
 
     specify do
@@ -38,16 +42,21 @@ RSpec.describe Encounter::Create, type: :concept do
   context "success" do
 
     subject(:result) do
-      Encounter::Create.(params, "current_user" => current_user)
+      Encounter::Create.(
+        {"encounter" => params}, "current_user" => current_user
+      )
     end
 
     specify do
-      expect( subject.success? ).to be true
+      expect( result.success? ).to be true
     end
 
     specify do
-      expect( subject["model"] ).to be_a Encounter
-      expect( subject["model"].persisted? ).to be true
+      model = result["model"]
+      expect( model.persisted? ).to be true
+      expect( model.name ).to eq params[:name]
+      expect( model.challenge_rating ).to eq params[:challenge_rating]
+      expect( model.experience_points ).to eq params[:experience_points]
     end
 
   end

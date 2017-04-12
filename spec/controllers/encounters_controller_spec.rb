@@ -2,12 +2,16 @@ require 'rails_helper'
 
 RSpec.describe EncountersController, type: :controller do
 
+  let(:admin) do
+    create(:admin)
+  end
+
   let!(:encounter) do
-    Encounter.create!(name:"Test", challenge_rating:10, experience_points:1000,user:user)
+    create(:encounter, user: admin)
   end
 
   before(:each) do
-    sign_in user
+    sign_in admin
   end
 
   describe "#index" do

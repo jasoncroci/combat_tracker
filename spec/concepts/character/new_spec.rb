@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Character::New, type: :concept do
 
-  let(:current_user){ User.new(admin:true) }
+  let(:current_user){ build(:admin) }
 
   subject(:result) do
     Character::New.({}, "current_user" => current_user)
@@ -10,7 +10,7 @@ RSpec.describe Character::New, type: :concept do
 
   context "policy violation" do
 
-    let(:current_user){ User.new }
+    let(:current_user){ build(:user) }
 
     subject(:result) do
       Character::New.()
@@ -27,8 +27,8 @@ RSpec.describe Character::New, type: :concept do
   end
 
   specify do
-    expect( subject["model"] ).to be_a Character
-    expect( subject["contract.default"] ).to be_a Character::Contract::Create
+    expect( result["model"] ).to be_a Character
+    expect( result["contract.default"] ).to be_a Character::Contract::Create
   end
 
 end

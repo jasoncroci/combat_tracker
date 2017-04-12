@@ -3,14 +3,14 @@ require 'rails_helper'
 RSpec.describe Character::Create, type: :concept do
 
   let(:params) do
-    {"character" => {name: "Bob", hit_points: 100, armor_class: 20}}
+    attributes_for(:character)
   end
 
-  let(:current_user){ User.new(admin:true) }
+  let(:current_user){ build(:admin) }
 
   context "policy violation" do
 
-    let(:current_user){ User.new }
+    let(:current_user){ build(:user) }
 
     subject(:result) do
       Character::Create.(params)
@@ -38,16 +38,21 @@ RSpec.describe Character::Create, type: :concept do
   context "success" do
 
     subject(:result) do
-      Character::Create.(params, "current_user" => current_user)
+      Character::Create.(
+        {"character" => params}, "current_user" => current_user
+      )
     end
 
     specify do
-      expect( subject.success? ).to be true
+      expect( result.success? ).to be true
     end
 
     specify do
-      expect( subject["model"] ).to be_a Character
-      expect( subject["model"].persisted? ).to be true
+      model = result["model"]
+      expect( model.persisted? ).to be true
+      expect( model.name ).to eq params[:name]
+      expect( model.hit_points ).to eq params[:hit_points]
+      expect( model.armor_class ).to eq params[:armor_class]
     end
 
   end

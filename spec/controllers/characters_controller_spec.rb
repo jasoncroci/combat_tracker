@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe CharactersController, type: :controller do
 
   let!(:character) do
-    Character.create!(name:"Test",hit_points:100,armor_class:10)
+    create(:character)
   end
 
   before(:each) do

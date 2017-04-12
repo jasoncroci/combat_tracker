@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Combat::Broadcaster::Update, type: :model do
   include DeviseUser::Helpers
 
-  let(:combat){ Combat.new }
+  let(:combat){ build(:combat) }
 
   let(:contract) do
     Combat::Contract::Create.new combat, {
@@ -14,12 +14,14 @@ describe Combat::Broadcaster::Update, type: :model do
   end
 
   subject(:broadcaster) do
-    Combat::Broadcaster::Update.("current_user" => current_user, "contract.default" => contract)
+    Combat::Broadcaster::Update.(
+      "current_user" => current_user, "contract.default" => contract
+    )
   end
 
   context "admin user" do
 
-    let(:current_user){ user(:admin) }
+    let(:current_user){ build(:admin) }
 
     specify do
       expect( subject ).to eq(
@@ -32,7 +34,7 @@ describe Combat::Broadcaster::Update, type: :model do
 
   context "user" do
 
-    let(:current_user){ user(:standard) }
+    let(:current_user){ build(:user) }
 
     specify do
       expect( subject ).to eq(

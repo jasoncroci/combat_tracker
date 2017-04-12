@@ -2,15 +2,15 @@ require 'rails_helper'
 
 RSpec.describe Enemy::Edit, type: :concept do
 
-  let!(:encounter) do
-    Encounter.create!(name:"Encounter",user:user)
+  let(:encounter) do
+    create(:encounter)
   end
 
-  let!(:enemy) do
-    Enemy.create!(name:"Test", hit_points:100, armor_class:10, encounter: encounter)
+  let(:enemy) do
+    create(:enemy, encounter: encounter)
   end
 
-  let(:current_user){ User.new(admin:true) }
+  let(:current_user){ build(:admin) }
 
   let(:params) do
     {id: enemy.id, "encounter_id" => encounter.id}
@@ -18,7 +18,7 @@ RSpec.describe Enemy::Edit, type: :concept do
 
   context "policy violation" do
 
-    let(:current_user){ User.new }
+    let(:current_user){ build(:user) }
 
     subject(:result) do
       Enemy::Edit.(params)

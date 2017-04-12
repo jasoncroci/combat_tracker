@@ -2,20 +2,28 @@ require 'rails_helper'
 
 RSpec.describe Encounter, type: :model do
 
-  let!(:encounter1) do
-    Encounter.create!(name: "Encounter1",user:user)
+  let(:admin1) do
+    create(:admin)
   end
 
-  let!(:encounter2) do
-    Encounter.create!(name: "Encounter2",user:user(:standard))
+  let(:admin2) do
+    create(:admin, email: "admin2@admin.com")
   end
 
-  let!(:enemy1) do
-    Enemy.create!(name:"Enemy1", encounter_id: encounter1.id)
+  let(:encounter1) do
+    create(:encounter, user: admin1)
   end
 
-  let!(:enemy2) do
-    Enemy.create!(name:"Enemy2", encounter_id: encounter1.id)
+  let(:encounter2) do
+    create(:encounter, user: admin2)
+  end
+
+  let(:enemy1) do
+    create(:enemy, encounter: encounter1)
+  end
+
+  let(:enemy2) do
+    create(:enemy, encounter: encounter1)
   end
 
   describe "#enemies" do
@@ -29,11 +37,11 @@ RSpec.describe Encounter, type: :model do
   describe "by_user scope" do
 
     specify do
-      expect( Encounter.by_user(user) ).to match_array [encounter1]
+      expect( Encounter.by_user(admin1) ).to match_array [encounter1]
     end
 
     specify do
-      expect( Encounter.by_user(user(:standard)) ).to match_array [encounter2]
+      expect( Encounter.by_user(admin2) ).to match_array [encounter2]
     end
 
   end

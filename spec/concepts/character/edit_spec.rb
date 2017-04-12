@@ -2,15 +2,15 @@ require 'rails_helper'
 
 RSpec.describe Character::Edit, type: :concept do
 
-  let!(:character) do
-    Character.create!(name:"Test",hit_points:100,armor_class:10)
+  let(:character) do
+    create(:character)
   end
 
-  let(:current_user){ User.new(admin:true) }
+  let(:current_user){ build(:admin) }
 
   context "policy violation" do
 
-    let(:current_user){ User.new }
+    let(:current_user){ build(:user) }
 
     subject(:result) do
       Character::Edit.(id: character.id)
@@ -37,7 +37,9 @@ RSpec.describe Character::Edit, type: :concept do
   context "success" do
 
     subject(:result) do
-      Character::Edit.({id: character.id}, "current_user" => current_user)
+      Character::Edit.(
+        {id: character.id}, "current_user" => current_user
+      )
     end
 
     specify do
@@ -45,7 +47,7 @@ RSpec.describe Character::Edit, type: :concept do
     end
 
     specify do
-      expect( subject["model"] ).to eq character
+      expect( result["model"] ).to eq character
       expect( result["contract.default"] ).to be_a Character::Contract::Create
     end
 

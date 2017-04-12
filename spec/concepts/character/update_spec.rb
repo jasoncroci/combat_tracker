@@ -3,21 +3,23 @@ require 'rails_helper'
 RSpec.describe Character::Update, type: :concept do
 
   let(:character) do
-    Character.create!(name:"Test",hit_points:100,armor_class:10)
+    create(:character)
   end
 
   let(:params) do
-    {id: character.id, "character" => {name: "Bob", hit_points: 99, armor_class: 9}}
+    attributes_for(:character, name: "EditName", hit_points: 1, armor_class: 10)
   end
 
-  let(:current_user){ User.new(admin:true) }
+  let(:current_user){ build(:admin) }
 
   context "policy violation" do
 
     let(:current_user){ User.new }
 
     subject(:result) do
-      Character::Update.(params)
+      Character::Update.(
+        {id: character.id, "character" => params}
+      )
     end
 
     specify do
@@ -41,18 +43,20 @@ RSpec.describe Character::Update, type: :concept do
   context "success" do
 
     subject(:result) do
-      Character::Update.(params, "current_user" => current_user)
+      Character::Update.(
+        {id: character.id, "character" => params}, "current_user" => current_user
+      )
     end
 
     specify do
-      expect( subject.success? ).to be true
+      expect( result.success? ).to be true
     end
 
     specify do
-      model = subject["model"]
-      expect( model.name ).to eql "Bob"
-      expect( model.hit_points ).to eql 99
-      expect( model.armor_class ).to eql 9
+      model = result["model"]
+      expect( model.name ).to eql "EditName"
+      expect( model.hit_points ).to eql 1
+      expect( model.armor_class ).to eql 10
     end
 
   end

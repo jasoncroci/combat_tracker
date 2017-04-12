@@ -3,19 +3,21 @@ require 'rails_helper'
 RSpec.describe Combat::Delete, type: :concept do
 
   let(:encounter) do
-    Encounter.create!(name:"Test",challenge_rating:10,experience_points:10000,user:user)
+    create(:encounter)
   end
 
   let!(:combat) do
-    Combat.create!(data:{}, user: user, encounter: encounter)
+    create(:combat, encounter: encounter)
   end
 
-  let(:current_user){ User.new(admin:true) }
+  let(:current_user){ build(:admin) }
 
   context "policy violation" do
 
     subject(:result) do
-      Combat::Delete.({id:combat.id})
+      Combat::Delete.(
+        {id:combat.id}
+      )
     end
 
     specify do
@@ -37,7 +39,9 @@ RSpec.describe Combat::Delete, type: :concept do
   end
 
   subject(:result) do
-    Combat::Delete.({id:combat.id}, "current_user" => current_user)
+    Combat::Delete.(
+      {id:combat.id}, "current_user" => current_user
+    )
   end
 
   specify do

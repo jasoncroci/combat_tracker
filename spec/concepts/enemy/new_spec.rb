@@ -3,18 +3,20 @@ require 'rails_helper'
 RSpec.describe Enemy::New, type: :concept do
 
   let!(:encounter) do
-    Encounter.create!(name:"Encounter",user: user)
+    create(:encounter)
   end
 
-  let(:current_user){ User.new(admin:true) }
+  let(:current_user){ build(:admin) }
 
   subject(:result) do
-    Enemy::New.({"encounter_id" =>  encounter.id}, "current_user" => current_user)
+    Enemy::New.(
+      {"encounter_id" =>  encounter.id}, "current_user" => current_user
+    )
   end
 
   context "policy violation" do
 
-    let(:current_user){ User.new }
+    let(:current_user){ build(:user) }
 
     specify do
       expect( result.success? ).to be false

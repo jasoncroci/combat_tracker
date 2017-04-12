@@ -2,16 +2,20 @@ require 'rails_helper'
 
 RSpec.describe EnemiesController, type: :controller do
 
-  let!(:encounter) do
-    Encounter.create(name:"Encounter1",user:user)
+  let(:admin) do
+    create(:admin)
   end
 
-  let!(:enemy) do
-    encounter.enemies.create!(name:"Test",hit_points:100,armor_class:10)
+  let(:encounter) do
+    create(:encounter, user: admin)
+  end
+
+  let(:enemy) do
+    create(:enemy, encounter: encounter)
   end
 
   before(:each) do
-    sign_in user
+    sign_in admin
   end
 
   describe "#index" do

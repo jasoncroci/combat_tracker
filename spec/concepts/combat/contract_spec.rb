@@ -2,16 +2,16 @@ require 'rails_helper'
 
 RSpec.describe Combat::Contract::Create, type: :concept do
 
-  let!(:encounter) do
-    Encounter.create!(name: "Encounter1", user: user)
+  let(:encounter) do
+    create(:encounter)
   end
 
-  let!(:character1) do
-    Character.create!(name:"Character1", hit_points: 200)
+  let(:character1) do
+    create(:character)
   end
 
   let!(:enemy1) do
-    Enemy.create!(name:"Enemy1", hit_points: 100, encounter_id: encounter.id, initiative_bonus: 0)
+    create(:enemy, encounter: encounter)
   end
 
   let(:combat) do
@@ -19,21 +19,19 @@ RSpec.describe Combat::Contract::Create, type: :concept do
   end
 
   subject(:contract) do
-    Combat::Contract::Create.new combat, encounter:encounter, enemies: [enemy1], characters: [character1]
+    Combat::Contract::Create.new combat, {
+      encounter:encounter,
+      enemies: [enemy1],
+      characters: [character1]
+    }
   end
 
   describe "default values" do
 
     specify do
-      expect( subject.current_round ).to eq 1
-    end
-
-    specify do
-      expect( subject.enemies.first.current_hit_points ).to eq 100
-    end
-
-    specify do
-      expect( subject.characters.first.current_hit_points ).to eq 200
+      expect( contract.current_round ).to eq 1
+      expect( contract.enemies.first.current_hit_points ).to eq 200
+      expect( contract.characters.first.current_hit_points ).to eq 100
     end
 
   end
@@ -53,7 +51,9 @@ RSpec.describe Combat::Contract::Create, type: :concept do
     end
 
     subject(:contract) do
-      Combat::Contract::Create.new(Combat.new).deserialize(characters: characters_graph, enemies: enemies_graph, encounter: encounter_graph)
+      Combat::Contract::Create.new(Combat.new).deserialize(
+        characters: characters_graph, enemies: enemies_graph, encounter: encounter_graph
+      )
     end
 
     specify do
@@ -85,11 +85,13 @@ RSpec.describe Combat::Contract::Create, type: :concept do
   describe "start_combat!" do
 
     let!(:enemy2) do
-      Enemy.create!(name:"Enemy2", hit_points: 50, encounter_id: encounter.id, initiative_bonus: 5)
+      create(:enemy, encounter: encounter, initiative_bonus: 5)
     end
 
     subject(:contract) do
-      Combat::Contract::Create.new combat, enemies: [enemy1,enemy2]
+      Combat::Contract::Create.new combat, {
+        enemies: [enemy1,enemy2]
+      }
     end
 
     before do
@@ -108,11 +110,11 @@ RSpec.describe Combat::Contract::Create, type: :concept do
   describe "combatants" do
 
     let!(:character2) do
-      Character.create!(name:"Character2", hit_points: 5)
+      create(:character)
     end
 
     let!(:enemy2) do
-      Enemy.create!(name:"Enemy2", hit_points: 50, encounter_id: encounter.id)
+      create(:enemy, encounter: encounter)
     end
 
     before do

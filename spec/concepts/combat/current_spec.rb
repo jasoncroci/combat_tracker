@@ -3,11 +3,11 @@ require 'rails_helper'
 RSpec.describe Combat::Current, type: :concept do
 
   let!(:encounter) do
-    Encounter.create!(name:"Test",challenge_rating:10,experience_points:10000,user:user)
+    create(:encounter)
   end
 
   let!(:combat) do
-    Combat.create!(data:{"encounter" => {"name" => "Encounter1"}}, user: user, encounter: encounter)
+    create(:combat, encounter: encounter)
   end
 
   subject(:result) do
@@ -27,7 +27,7 @@ RSpec.describe Combat::Current, type: :concept do
   end
 
   specify do
-    expect( result["contract.default"].encounter.name ).to eq "Encounter1"
+    expect( result["contract.default"].encounter.name ).to eq encounter.name
   end
 
 end
