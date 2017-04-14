@@ -25,3 +25,7 @@ a.link:hover {
     text-decoration: none;
     cursor: pointer;
 }
+
+[data-visible="false"] {
+  opacity: .5;
+}
