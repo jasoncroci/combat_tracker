@@ -6,6 +6,7 @@ module Combat::Cell::User
     property :initiative
     property :name
     property :armor_class
+    property :visible
 
     def character?
       model.model.is_a?(Character)

@@ -51,23 +51,28 @@ $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
   this.App.combat.updateTurn = function(item){
     $("#combat_current_turn").val(item.attr("id"));
     $("#combat_form").submit();
-  }
+  };
+
+  this.App.combat.startCombat = function(){
+    var trs = $("tbody tr");
+    first_turn_tr = trs.filter("[data-visible='true']:first");
+    first_turn_tr.addClass("info");
+    App.combat.updateTurn(first_turn_tr);
+  };
 
   this.App.combat.nextTurn = function(){
-    var trs = $("tbody tr");
-    var selected_item = $("tbody tr.info")
+    var current_turn = $("#combat_current_turn").val();
+    var selected_item = $("tr#" + current_turn);
+    var new_selected_item = selected_item.nextAll("[data-visible='true']").filter(":first");
 
-    var index = 0;
-    if( selected_item.index() < trs.size() - 1){
-     index = selected_item.index() + 1;
-    } else{
+    if(!new_selected_item.length){
+      new_selected_item = trs.filter("[data-visible='true']:first");
       var hidden_field = $("#combat_current_round")
       hidden_field.val(parseInt(hidden_field.val()) + 1);
       App.combat.updateRound(hidden_field.val());
     }
 
     selected_item.removeClass("info");
-    var new_selected_item = $("tbody tr:eq("+ index +")");
     new_selected_item.addClass("info");
     App.combat.updateTurn(new_selected_item);
   };
@@ -78,7 +83,6 @@ $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
     if( current_hit_points <= 0 && remove_from_play ){
       item.closest("tr").remove();
     } else if( current_hit_points <= total_hit_points/2 ){
-      //item.closest("td").addClass("danger");
       item.addClass("bloodied")
       item.closest("tr").find("[name$='_name']").addClass("bloodied");
     } else{
@@ -103,6 +107,11 @@ $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
     App.combat.updateCombatantCondition(hit_point_elem, hit_point_field.val(), total_hit_points, remove_from_play);
   };
 
+  this.App.combat.updateCombatantPresence = function(identity, visible){
+    console.log(identity + " | " + visible)
+    $("tr#" + identity).toggle(visible);
+  };
+
   this.App.combat.updateUI = function(config, data){
     App.combat.config = config;
     App.combat.updateRound(data.current_round);
@@ -112,16 +121,20 @@ $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
       App.combat.updateInitiative("enemy_" + enemy.id, enemy.initiative);
       App.combat.updateInitiativeOrder( $("tr#enemy_" + enemy.id).closest("tr"), enemy.initiative );
       App.combat.updateHitPoints("enemy_" + enemy.id, enemy.current_hit_points, enemy.hit_points, true);
+      if(!App.util.isAuthor(App.combat.config.id)){
+        App.combat.updateCombatantPresence("enemy_" + enemy.id, enemy.visible);
+      }
     });
 
     $.each(data.characters, function( index, character ) {
       App.combat.updateInitiative("character_" + character.id, character.initiative);
       App.combat.updateInitiativeOrder( $("tr#character_" + character.id).closest("tr"), character.initiative );
       App.combat.updateHitPoints("character_" + character.id, character.current_hit_points, character.hit_points, false);
+      if(!App.util.isAuthor(App.combat.config.id)){
+        App.combat.updateCombatantPresence("character_" + character.id, character.visible);
+      }
     });
   };
-
-
 }).call(this);
 
 
@@ -140,8 +153,23 @@ $(document).ready(function() {
 
   $("#begin_combat_btn").click(function(e){
     e.preventDefault();
-    App.combat.nextTurn();
+    var current_turn = $("#combat_current_turn").val();
+    if( current_turn == ""){
+      App.combat.startCombat();
+    } else{
+      App.combat.nextTurn();
+    }
     $(this).html("Next");
+  });
+
+  $('#combatant_table td[name$="_presence"]').on('click', function(e, params) {
+    $(this).find("span").toggle();
+    var visible = $(this).find("span:visible").attr("data-visible");
+    var tr = $(this).closest("tr");
+    tr.attr("data-visible", visible);
+    var field = $("#" + tr.attr("id") + "_visible_field");
+    field.val(visible);
+      //visible === "true" ? $(this).show() : $(this).hide();
   });
 
   $('#combatant_table a[data-type="text"]').editable({
@@ -158,8 +186,14 @@ $(document).ready(function() {
     App.combat.updateInitiativeOrder( $(this).closest("tr"), params.newValue );
   });
 
+  $('#combatant_table a[name$="_current_hit_points"]').on('shown', function(e, editable) {
+    setTimeout(function() { editable.input.$input.select(); }, 0);
+  });
+
   $('#combatant_table a[name$="_current_hit_points"]').on('save', function(e, params) {
     var field_name = $(this).attr("name").replace("_current","")+"_field";
+    var newValue = parseInt($(this).html()) - parseInt(params.newValue);
+    params.newValue = newValue
     App.combat.updateField( $(this).attr("name"), params.newValue );
     App.combat.updateCombatantCondition(
       $(this),

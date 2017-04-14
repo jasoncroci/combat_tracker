@@ -22,6 +22,7 @@ module Combat::Contract
       # Virtual Fields
       property :current_hit_points, type: Types::Form::Int, virtual: true, default: -> { self.hit_points }
       property :initiative, type: Types::Form::Int, virtual: true, default: 0
+      property :visible, type: Types::Form::Bool, virtual: true, default: false
 
       def identity
         "enemy_#{id}"
@@ -36,6 +37,7 @@ module Combat::Contract
       # Virtual Fields
       property :current_hit_points, type: Types::Form::Int, virtual: true, default: -> { self.hit_points }
       property :initiative, type: Types::Form::Int, virtual: true, default: 0
+      property :visible, type: Types::Form::Bool, virtual: true, default: true
 
       def identity
         "character_#{id}"

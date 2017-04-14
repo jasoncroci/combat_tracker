@@ -9,6 +9,7 @@
   <%= my_fields_for f, :enemies do |enemy_form| %>
     <%= enemy_form.hidden_field :id %>
     <%= enemy_form.hidden_field :name %>
+    <%= enemy_form.hidden_field :visible, id: "#{enemy_form.object.identity}_visible_field" %>
     <%= enemy_form.hidden_field :hit_points, id: "#{enemy_form.object.identity}_hit_points_field" %>
     <%= enemy_form.hidden_field :armor_class %>
     <%= enemy_form.hidden_field :initiative_bonus %>
@@ -18,6 +19,7 @@
   <%= my_fields_for f, :characters do |character_form| %>
     <%= character_form.hidden_field :id %>
     <%= character_form.hidden_field :name %>
+    <%= character_form.hidden_field :visible, id: "#{character_form.object.identity}_visible_field" %>
     <%= character_form.hidden_field :hit_points, id: "#{character_form.object.identity}_hit_points_field" %>
     <%= character_form.hidden_field :armor_class %>
     <%= character_form.hidden_field :current_hit_points, id: "#{character_form.object.identity}_current_hit_points_field" %>

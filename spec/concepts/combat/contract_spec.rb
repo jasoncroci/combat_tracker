@@ -39,11 +39,11 @@ RSpec.describe Combat::Contract::Create, type: :concept do
   describe "populators" do
 
     let(:enemies_graph) do
-      [{"id" => nil, "name"=>"Troll 1asdf", "hit_points"=>110, "armor_class"=>13, "current_hit_points"=>110, "initiative"=>0, "initiative_bonus" =>0}]
+      [{"id" => nil, "name"=>"Troll 1asdf", "hit_points"=>110, "armor_class"=>13, "current_hit_points"=>110, "initiative"=>0, "initiative_bonus" =>0, "visible" => false}]
     end
 
     let(:characters_graph) do
-      [{"id" => nil, "name"=>"Gareth", "hit_points"=>99, "armor_class"=>20, "current_hit_points"=>99, "initiative"=>0}]
+      [{"id" => nil, "name"=>"Gareth", "hit_points"=>99, "armor_class"=>20, "current_hit_points"=>99, "initiative"=>0, "visible" => true}]
     end
 
     let(:encounter_graph) do

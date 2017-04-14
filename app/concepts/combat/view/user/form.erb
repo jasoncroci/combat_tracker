@@ -5,9 +5,11 @@
   <%= my_fields_for f, :enemies do |enemy_form| %>
     <%= enemy_form.hidden_field :hit_points, id: "#{enemy_form.object.identity}_hit_points_field" %>
     <%= enemy_form.hidden_field :current_hit_points, id: "#{enemy_form.object.identity}_current_hit_points_field" %>
+    <%= enemy_form.hidden_field :visible, id: "#{enemy_form.object.identity}_visible_field" %>
   <% end %>
   <%= my_fields_for f, :characters do |character_form| %>
     <%= character_form.hidden_field :hit_points, id: "#{character_form.object.identity}_hit_points_field" %>
     <%= character_form.hidden_field :current_hit_points, id: "#{character_form.object.identity}_current_hit_points_field" %>
+    <%= character_form.hidden_field :visible, id: "#{character_form.object.identity}_visible_field" %>
   <% end %>
 <% end %>
