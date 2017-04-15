@@ -108,7 +108,6 @@ $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
   };
 
   this.App.combat.updateCombatantPresence = function(identity, visible){
-    console.log(identity + " | " + visible)
     $("tr#" + identity).toggle(visible);
   };
 
@@ -192,7 +191,7 @@ $(document).ready(function() {
 
   $('#combatant_table a[name$="_current_hit_points"]').on('save', function(e, params) {
     var field_name = $(this).attr("name").replace("_current","")+"_field";
-    var newValue = parseInt($(this).html()) - parseInt(params.newValue);
+    var newValue = parseInt($(this).html()) + parseInt(params.newValue);
     params.newValue = newValue
     App.combat.updateField( $(this).attr("name"), params.newValue );
     App.combat.updateCombatantCondition(
