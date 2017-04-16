@@ -13,7 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require bootstrap.min
+//= require bootstrap-sprockets
 //= require bootstrap-editable.min
 //= require cookie
 //= require util

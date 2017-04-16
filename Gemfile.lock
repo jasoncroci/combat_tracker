@@ -45,7 +45,12 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     arel (7.1.4)
+    autoprefixer-rails (6.7.7.1)
+      execjs
     bindex (0.5.0)
+    bootstrap-sass (3.3.7)
+      autoprefixer-rails (>= 5.2.1)
+      sass (>= 3.3.4)
     bootstrap_form (2.6.0)
     builder (3.2.3)
     cells (4.1.6)
@@ -276,6 +281,7 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt!
+  bootstrap-sass (~> 3.3.6)
   bootstrap_form
   byebug
   cells-erb
